@@ -5,9 +5,3 @@
   display: flex;
   flex-direction: row;
 } */
-
-.chart-container {
-  position: relative;
-  /* width: 1200px; */
-  overflow-x: scroll;
-}

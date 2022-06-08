@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
+import ChartControls from "./ChartControls";
 import { enGB } from "date-fns/locale";
 import "chartjs-adapter-date-fns";
+import "../styles/chartControls.css";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -11,8 +13,12 @@ import {
   Tooltip,
   Legend,
   TimeScale,
+  BarElement,
+  Filler,
 } from "chart.js";
-import { Line } from "react-chartjs-2";
+import { Line, Chart } from "react-chartjs-2";
+import zoomPlugin from "chartjs-plugin-zoom";
+import { Container, Row, Col, Stack } from "react-bootstrap";
 
 ChartJS.register(
   CategoryScale,
@@ -22,27 +28,47 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend,
-  TimeScale
+  TimeScale,
+  BarElement,
+  Filler,
+  zoomPlugin
 );
 
 const options = {
   responsive: true,
   interaction: {
-    mode: "nearest",
-    axis: "x",
+    mode: "index",
+    axis: "xy",
     intersect: false,
   },
+  maintainAspectRatio: false,
   scales: {
-    y: {
-      title: {
-        display: true,
-        text: "Percentage",
-      },
+    "y-axis-chance": {
+      // title: {
+      //   display: true,
+      //   text: "Precipitation chance",
+      // },
       min: 0,
       max: 100,
+      grid: {
+        borderDash: [3, 3],
+      },
       ticks: {
-        callback: function (value) {
-          return value + "%";
+        callback: function (context) {
+          return context + "%";
+        },
+      },
+    },
+    "y-axis-amount": {
+      // title: {
+      //   display: true,
+      //   text: "Precipitation amount",
+      // },
+      min: 0,
+      max: 20,
+      ticks: {
+        callback: function (context) {
+          return context + "mm";
         },
       },
     },
@@ -50,32 +76,19 @@ const options = {
       adapters: {
         date: { locale: enGB },
       },
+      grid: {
+        borderDash: [3, 3],
+      },
       type: "time",
       distribution: "linear",
       time: {
-        //   parser: "yyyy-MM-dd",
         unit: "hour",
         displayFormats: {
-          millisecond: "HH:mm:ss a",
-          second: "HH:mm:ss a",
-          minute: "HH:mm:ss",
           hour: "MMM do h aaaa",
-          day: "iii:HH:mm:ss a",
-          week: "HH:mm:ss a",
-          month: "MMM iii HH",
-          quarter: "HH:mm:ss a",
-          year: "HH:mm:ss a",
         },
       },
       ticks: {
         source: "data",
-        // callback: function (value) {
-        //   console.log(value);
-        //   return new Date(value).toLocaleDateString("en-GB", {
-        //     month: "short",
-        //     year: "numeric",
-        //   });
-        // },
       },
     },
   },
@@ -85,29 +98,100 @@ const options = {
     },
     title: {
       display: true,
-      text: "Chart.js Line Chart",
+      text: "Precipitation outlook",
+    },
+    tooltip: {
+      callbacks: {
+        label: function (context) {
+          let label = context.dataset.label || "";
+          let value = context.formattedValue || "";
+          const suffix = context.datasetIndex === 0 ? " %" : "mm";
+          return label + ": " + value + suffix;
+        },
+      },
+    },
+    zoom: {
+      pan: {
+        enabled: true,
+        mode: "xy",
+        // modifierKey: "ctrl",
+      },
+      limits: {
+        x: { min: "original", max: "original" },
+        y: { min: "original", max: "original" },
+      },
+      zoom: {
+        wheel: {
+          enabled: true,
+        },
+        pinch: {
+          enabled: true,
+        },
+        mode: "x",
+        // drag: {
+        //   enabled: true,
+        //   threshold: 20,
+        // },
+      },
     },
   },
 };
 
-function RainfallChart({ precipChance, graphPeriods }) {
+function RainfallChart({ precipChance, graphPeriods, precipAmount }) {
+  const chartRef = useRef(null);
+
+  useEffect(() => {
+    const chart = chartRef.current;
+    if (chart) {
+      console.log("ChartJS", chart);
+    }
+  }, []);
+
   const data = {
     labels: graphPeriods,
     datasets: [
       {
+        type: "line",
+        fill: false,
         label: "Precipitation chance",
+        yAxisID: "y-axis-chance",
         data: precipChance,
         borderColor: "rgb(255, 99, 132)",
-        backgroundColor: "rgba(255, 99, 132, 0.5)",
+        backgroundColor: "rgb(255, 99, 132)",
+        lineTension: 0.2,
+        pointRadius: 0,
+      },
+      {
+        type: "line",
+        fill: true,
+        label: "Precipitation amount",
+        yAxisID: "y-axis-amount",
+        backgroundColor: "rgb(75, 192, 192)",
+        data: precipAmount,
+        pointRadius: 0,
+        borderColor: "white",
+        lineTension: 0.2,
+        // borderWidth: 2,
+        // barThickness: "flex",
       },
     ],
     borderColor: "rgb(255, 99, 132)",
-    backgroundColor: "rgba(255, 99, 132, 0.5)",
+    backgroundColor: "rgb(255, 99, 132)",
   };
 
   return (
     <>
-      <Line data={data} key="Precipitation" options={options} />
+      <Stack>
+        <Container className="chart-container">
+          <Line
+            data={data}
+            key="Precipitation"
+            options={options}
+            ref={chartRef}
+          />
+        </Container>
+        {chartRef.current && <ChartControls chartRef={chartRef} />}
+      </Stack>
     </>
   );
 }

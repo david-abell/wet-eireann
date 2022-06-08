@@ -1,13 +1,13 @@
 import "./App.css";
 import React, { useState, useEffect } from "react";
-import { Container } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import { XMLParser } from "fast-xml-parser";
 import sampleData from "./sampleData2.xml";
 import TodayCard from "./components/TodayCard";
 import RainfallChart from "./components/RainfallChart";
 
 // const weatherUrl =
-// "http://localhost:8010/proxy/metno-wdb2ts/locationforecast?lat=54.7210798611;long=-8.7237392806";
+//   "http://localhost:8010/proxy/metno-wdb2ts/locationforecast?lat=54.7210798611;long=-8.7237392806";
 const weatherUrl = sampleData;
 
 function App() {
@@ -18,6 +18,7 @@ function App() {
   const [graphPeriods, setGraphPeriods] = useState([]);
   // const [precipitation, setPrecipitation] = useState([]);
   const [precipChance, setPrecipChance] = useState([]);
+  const [precipAmount, setPrecipAmount] = useState([]);
 
   useEffect(() => {
     let isApiSubscribed = false;
@@ -45,6 +46,7 @@ function App() {
   useEffect(() => {
     let precipChances = [];
     let periods = [];
+    let precipAmounts = [];
     const precipitationData = weatherData.pointData.filter((el, index) => {
       return el.location.precipitation;
     });
@@ -58,11 +60,15 @@ function App() {
           precipitation: { value, minvalue, maxvalue, probability },
         },
       } = el;
-      precipChances.push(parseFloat(probability) || 0);
+      const mean =
+        minvalue && maxvalue
+          ? (parseFloat(minvalue) + parseFloat(maxvalue)) / 2
+          : value;
+      precipChances.push(probability);
+      precipAmounts.push(mean);
       periods.push(from);
-      // console.log(from, timeStamp, toTimeStamp, probability);
     });
-
+    setPrecipAmount(precipAmounts);
     setPrecipChance(precipChances);
 
     setGraphPeriods(periods);
@@ -70,20 +76,25 @@ function App() {
 
   return (
     <div className="App">
-      <Container fluid="lg" className="chart-container">
-        {precipChance && graphPeriods && (
-          <RainfallChart
-            precipChance={precipChance}
-            graphPeriods={graphPeriods}
-          />
-        )}
+      <Container>
+        <Row>
+          <Col className="chart-container">
+            {precipChance && graphPeriods && (
+              <RainfallChart
+                precipChance={precipChance}
+                graphPeriods={graphPeriods}
+                precipAmount={precipAmount}
+              />
+            )}
+          </Col>
+        </Row>
       </Container>
-      {weatherData.pointData.length && (
+      {/* {weatherData.pointData.length && (
         <>
           <TodayCard pointData={weatherData.pointData[0].location} />
           <TodayCard pointData={weatherData.pointData[1].location} />
         </>
-      )}
+      )} */}
     </div>
   );
   // return (
