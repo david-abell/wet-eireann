@@ -1,6 +1,5 @@
 .chart-container {
-  position: relative;
-  /* overflow-x: scroll; */
-  height: 440px;
-  width: 800px;
+  /* position: relative; */
+  height: 600px;
+  /* width: 800px; */
 }

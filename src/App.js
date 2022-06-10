@@ -73,13 +73,12 @@ function App() {
 
     setGraphPeriods(periods);
   }, [weatherData, setGraphPeriods]);
-
   return (
     <div className="App">
       <Container>
         <Row>
           <Col className="chart-container">
-            {precipChance && graphPeriods && (
+            {precipChance.length && graphPeriods.length && (
               <RainfallChart
                 precipChance={precipChance}
                 graphPeriods={graphPeriods}

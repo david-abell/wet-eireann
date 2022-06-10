@@ -1,12 +1,17 @@
-import { Button } from "bootstrap";
+import { Button } from "react-bootstrap";
 import React from "react";
 
-function ChartButton({ name, handler }) {
+function ChartButton({ name, handler, chartRef }) {
+  const handleClick = (e, handler) => {
+    e.target.blur();
+    handler(chartRef?.current);
+  };
+
   return (
-    <Button key={name} onClick={handler} className="mx-1">
+    <Button onClick={(e) => handleClick(e, handler)} className="mx-1">
       {name}
     </Button>
   );
 }
 
-export default React.forwardRef(ChartButton);
+export default ChartButton;

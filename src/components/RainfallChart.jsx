@@ -1,7 +1,8 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState, useMemo } from "react";
 import ChartControls from "./ChartControls";
 import { enGB } from "date-fns/locale";
 import "chartjs-adapter-date-fns";
+import { add, sub } from "date-fns";
 import "../styles/chartControls.css";
 import {
   Chart as ChartJS,
@@ -34,119 +35,145 @@ ChartJS.register(
   zoomPlugin
 );
 
-const options = {
-  responsive: true,
-  interaction: {
-    mode: "index",
-    axis: "xy",
-    intersect: false,
-  },
-  maintainAspectRatio: false,
-  scales: {
-    "y-axis-chance": {
-      // title: {
-      //   display: true,
-      //   text: "Precipitation chance",
-      // },
-      min: 0,
-      max: 100,
-      grid: {
-        borderDash: [3, 3],
-      },
-      ticks: {
-        callback: function (context) {
-          return context + "%";
-        },
-      },
-    },
-    "y-axis-amount": {
-      // title: {
-      //   display: true,
-      //   text: "Precipitation amount",
-      // },
-      min: 0,
-      max: 20,
-      ticks: {
-        callback: function (context) {
-          return context + "mm";
-        },
-      },
-    },
-    x: {
-      adapters: {
-        date: { locale: enGB },
-      },
-      grid: {
-        borderDash: [3, 3],
-      },
-      type: "time",
-      distribution: "linear",
-      time: {
-        unit: "hour",
-        displayFormats: {
-          hour: "MMM do h aaaa",
-        },
-      },
-      ticks: {
-        source: "data",
-      },
-    },
-  },
-  plugins: {
-    legend: {
-      position: "top",
-    },
-    title: {
-      display: true,
-      text: "Precipitation outlook",
-    },
-    tooltip: {
-      callbacks: {
-        label: function (context) {
-          let label = context.dataset.label || "";
-          let value = context.formattedValue || "";
-          const suffix = context.datasetIndex === 0 ? " %" : "mm";
-          return label + ": " + value + suffix;
-        },
-      },
-    },
-    zoom: {
-      pan: {
-        enabled: true,
-        mode: "xy",
-        // modifierKey: "ctrl",
-      },
-      limits: {
-        x: { min: "original", max: "original" },
-        y: { min: "original", max: "original" },
-      },
-      zoom: {
-        wheel: {
-          enabled: true,
-        },
-        pinch: {
-          enabled: true,
-        },
-        mode: "x",
-        // drag: {
-        //   enabled: true,
-        //   threshold: 20,
-        // },
-      },
-    },
-  },
-};
-
 function RainfallChart({ precipChance, graphPeriods, precipAmount }) {
   const chartRef = useRef(null);
-
-  useEffect(() => {
-    const chart = chartRef.current;
-    if (chart) {
-      console.log("ChartJS", chart);
+  const [minRange, setMinRange] = useState(initRange(0));
+  const [maxRange, setMaxRange] = useState(initRange(-1));
+  const [minMeanRange, setMinMeanRange] = useState(initMeanRange(0));
+  const [maxMeanRange, setMaxMeanRange] = useState(initMeanRange(-1));
+  const [sliderValue, setSliderValue] = useState(0);
+  // useEffect(() => {
+  //   const chart = chartRef.current;
+  //   if (chart) {
+  //     console.log("ChartJS", chart);
+  //   }
+  // }, []);
+  function initRange(index) {
+    if (graphPeriods.at(index)) {
+      return new Date(graphPeriods.at(index)).getTime();
     }
-  }, []);
+  }
+  function initMeanRange(index) {
+    // expect start and end indexses, 0 or -1 only
+    const range1 = initRange(index);
+    const range2 = !index
+      ? add(new Date(graphPeriods.at(0)), { days: 3 }).getTime()
+      : sub(new Date(graphPeriods.at(-1)), { days: 3 }).getTime();
+    return range1 && range2 && (range1 + range2) / 2;
+  }
+  // useEffect(() => {
+  //   const range = minRange;
+  //   if (range) {
+  //     console.log("Slider range", range);
+  //   }
+  // }, []);
 
+  const options = useMemo(
+    () => ({
+      responsive: true,
+      interaction: {
+        mode: "index",
+        axis: "xy",
+        intersect: false,
+      },
+      maintainAspectRatio: false,
+      scales: {
+        "y-axis-chance": {
+          // title: {
+          //   display: true,
+          //   text: "Precipitation chance",
+          // },
+          min: 0,
+          max: 100,
+          grid: {
+            borderDash: [3, 3],
+          },
+          ticks: {
+            callback: function (context) {
+              return context + "%";
+            },
+          },
+        },
+        "y-axis-amount": {
+          // title: {
+          //   display: true,
+          //   text: "Precipitation amount",
+          // },
+          min: 0,
+          max: 20,
+          ticks: {
+            callback: function (context) {
+              return context + "mm";
+            },
+          },
+        },
+        x: {
+          adapters: {
+            date: { locale: enGB },
+          },
+          grid: {
+            borderDash: [3, 3],
+          },
+          type: "time",
+          distribution: "linear",
+          time: {
+            unit: "hour",
+            displayFormats: {
+              hour: "MMM do h aaaa",
+            },
+          },
+          ticks: {
+            source: "data",
+          },
+          min: graphPeriods.at(0), // utc date string
+          max: add(new Date(graphPeriods.at(0)), { days: 1 }), // utc date string
+        },
+      },
+      plugins: {
+        legend: {
+          position: "top",
+        },
+        title: {
+          display: true,
+          text: "Precipitation outlook",
+        },
+        tooltip: {
+          callbacks: {
+            label: function (context) {
+              let label = context.dataset.label || "";
+              let value = context.formattedValue || "";
+              const suffix = context.datasetIndex === 0 ? " %" : "mm";
+              return label + ": " + value + suffix;
+            },
+          },
+        },
+        zoom: {
+          pan: {
+            enabled: true,
+            mode: "x",
+          },
+          limits: {
+            x: {
+              min: new Date(graphPeriods.at(0)), // date #
+              max: new Date(graphPeriods.at(-1)), // date #
+            },
+            y: { min: "original", max: "original" },
+          },
+          zoom: {
+            wheel: {
+              enabled: true,
+              speed: 0.1,
+            },
+            pinch: {
+              enabled: true,
+            },
+            mode: "x",
+          },
+        },
+      },
+    }),
+    [graphPeriods]
+  );
   const data = {
     labels: graphPeriods,
     datasets: [
@@ -171,14 +198,11 @@ function RainfallChart({ precipChance, graphPeriods, precipAmount }) {
         pointRadius: 0,
         borderColor: "white",
         lineTension: 0.2,
-        // borderWidth: 2,
-        // barThickness: "flex",
       },
     ],
     borderColor: "rgb(255, 99, 132)",
     backgroundColor: "rgb(255, 99, 132)",
   };
-
   return (
     <>
       <Stack>
@@ -190,7 +214,18 @@ function RainfallChart({ precipChance, graphPeriods, precipAmount }) {
             ref={chartRef}
           />
         </Container>
-        {chartRef.current && <ChartControls chartRef={chartRef} />}
+        {chartRef.current && (
+          <ChartControls
+            chartRef={chartRef}
+            minRange={minMeanRange}
+            maxRange={maxMeanRange}
+            setMinRange={setMinMeanRange}
+            setMaxRange={setMaxMeanRange}
+            sliderValue={sliderValue}
+            setSliderValue={setSliderValue}
+            graphPeriods={graphPeriods}
+          />
+        )}
       </Stack>
     </>
   );
