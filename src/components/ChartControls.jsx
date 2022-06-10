@@ -13,6 +13,14 @@ function ChartControls({
   setSliderValue,
   graphPeriods,
 }) {
+  const [sliderRange, setSliderRange] = useState(getSliderRange());
+
+  function getSliderRange() {
+    if (!graphPeriods) return;
+    const range = chartRef.current.scales.x.ticks;
+    return range.length;
+  }
+
   const actions = [
     {
       name: "Scroll left",
@@ -48,9 +56,9 @@ function ChartControls({
 
   const getPeriod = (value) => {
     const index = Math.round((graphPeriods.length / 100) * value);
-    console.log(value);
+    console.log(value, sliderRange);
     if (index !== 0 && !index) return null;
-    if (index >= graphPeriods.length) {
+    if (index > graphPeriods.length) {
       console.log("last");
       return graphPeriods.at(-1);
     }
@@ -61,20 +69,21 @@ function ChartControls({
   };
 
   const handleSlider = (e) => {
+    console.log(sliderRange);
     let value = Number(e.target.value);
     if (!chartRef || !graphPeriods) return;
     const { ticks } = chartRef.current.scales.x;
     if (!ticks.length) return;
-    const range = Math.floor(ticks.length / 2);
-    if (value < range) {
-      value += range;
+    if (value < sliderRange) {
+      value += sliderRange;
     }
-    if (range > 100 - value) {
-      value -= range;
+    if (sliderRange > 100 - value) {
+      value -= sliderRange;
     }
-    const periodStart = getPeriod(value - range);
-    const periodMid = getPeriod(value);
-    const periodEnd = getPeriod(value + range);
+    // console.log(chartRef.current);
+    const periodStart = getPeriod(value - sliderRange);
+    // const periodMid = getPeriod(value);
+    const periodEnd = getPeriod(value + sliderRange);
     setSliderValue(Number(e.target.value));
     chartRef.current.zoomScale(
       "x",
@@ -84,11 +93,7 @@ function ChartControls({
       },
       "none"
     );
-    chartRef.current.pan({ x: 0.01 }, undefined, "none");
-    console.log(
-      new Date(chartRef.current.scales.x.min),
-      new Date(chartRef.current.scales.x.max)
-    );
+    // chartRef.current.pan({ x: 0.01 }, undefined, "none");
     e.target.blur();
   };
   return (
