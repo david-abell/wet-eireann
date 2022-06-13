@@ -56,7 +56,6 @@ function ChartControls({
 
   const getPeriod = (value) => {
     const index = Math.round((graphPeriods.length / 100) * value);
-    console.log(value, sliderRange);
     if (index !== 0 && !index) return null;
     if (index > graphPeriods.length) {
       console.log("last");
@@ -69,32 +68,60 @@ function ChartControls({
   };
 
   const handleSlider = (e) => {
-    console.log(sliderRange);
-    let value = Number(e.target.value);
-    if (!chartRef || !graphPeriods) return;
-    const { ticks } = chartRef.current.scales.x;
-    if (!ticks.length) return;
-    if (value < sliderRange) {
-      value += sliderRange;
-    }
-    if (sliderRange > 100 - value) {
-      value -= sliderRange;
-    }
-    // console.log(chartRef.current);
-    const periodStart = getPeriod(value - sliderRange);
-    // const periodMid = getPeriod(value);
-    const periodEnd = getPeriod(value + sliderRange);
-    setSliderValue(Number(e.target.value));
-    chartRef.current.zoomScale(
-      "x",
-      {
-        min: new Date(periodStart).getTime(),
-        max: new Date(periodEnd).getTime(),
-      },
-      "none"
-    );
-    // chartRef.current.pan({ x: 0.01 }, undefined, "none");
+    const nextValue = Number(e.target.value);
+    const current = sliderValue.current;
+    setSliderValue({
+      old: current,
+      current: nextValue,
+    });
+
+    if (!chartRef.current || !graphPeriods || current === null) return;
+    const sliderPercent =
+      (Math.max(nextValue, current) - Math.min(nextValue, current)) / 100;
+    const visibleWidth =
+      chartRef.current.chartArea.width / (sliderRange / graphPeriods.length);
+    const panAmount =
+      nextValue > current
+        ? sliderPercent * visibleWidth * -1
+        : sliderPercent * visibleWidth;
+    chartRef.current.pan({ x: panAmount }, undefined, "none");
+
     e.target.blur();
+
+    // if (!chartRef || !graphPeriods) return;
+    // const ScrollPercent = (value / graphPeriods.length) * 100;
+    // let scale = sliderRange / graphPeriods.length;
+    // const { ticks } = chartRef.current.scales.x;
+    // if (ticks && ticks.length) {
+    //   scale = scale / ticks.length;
+    // }
+    // const halfRange = Math.floor(sliderRange / 2);
+    // const chartWidth = chartRef.current.width / 100;
+    // const panAmount =
+    //   value > sliderValue
+    //     ? chartWidth * ScrollPercent
+    //     : chartWidth * ScrollPercent * -1;
+
+    // if (!ticks.length) return;
+    // if (value <= halfRange) {
+    //   value += halfRange;
+    // }
+    // if (halfRange >= 100 - value) {
+    //   value -= halfRange;
+    // }
+    // const periodStart = getPeriod(value);
+    // const periodMid = getPeriod(value);
+    // const periodEnd = getPeriod(value + sliderRange);
+    // console.log("periodStart, periodEnd", periodStart, periodEnd);
+    // chartRef.current.zoomScale(
+    //   "x",
+    //   {
+    //     min: new Date(periodStart).getTime(),
+    //     max: new Date(periodEnd).getTime(),
+    //   },
+    //   "none"
+    // );
+    // chartRef.current.pan({ x: panAmount }, undefined, "none");
   };
   return (
     <>
@@ -103,7 +130,7 @@ function ChartControls({
         max={100}
         // min={minRange}
         // max={maxRange}
-        value={sliderValue}
+        value={sliderValue.current}
         onChange={handleSlider}
       />
 

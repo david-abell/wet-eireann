@@ -41,13 +41,8 @@ function RainfallChart({ precipChance, graphPeriods, precipAmount }) {
   const [maxRange, setMaxRange] = useState(initRange(-1));
   const [minMeanRange, setMinMeanRange] = useState(initMeanRange(0));
   const [maxMeanRange, setMaxMeanRange] = useState(initMeanRange(-1));
-  const [sliderValue, setSliderValue] = useState(0);
-  // useEffect(() => {
-  //   const chart = chartRef.current;
-  //   if (chart) {
-  //     console.log("ChartJS", chart);
-  //   }
-  // }, []);
+  const [sliderValue, setSliderValue] = useState({ current: 0, old: null });
+
   function initRange(index) {
     if (graphPeriods.at(index)) {
       return new Date(graphPeriods.at(index)).getTime();
@@ -61,12 +56,6 @@ function RainfallChart({ precipChance, graphPeriods, precipAmount }) {
       : sub(new Date(graphPeriods.at(-1)), { days: 3 }).getTime();
     return range1 && range2 && (range1 + range2) / 2;
   }
-  // useEffect(() => {
-  //   const range = minRange;
-  //   if (range) {
-  //     console.log("Slider range", range);
-  //   }
-  // }, []);
 
   const options = useMemo(
     () => ({
@@ -151,6 +140,9 @@ function RainfallChart({ precipChance, graphPeriods, precipAmount }) {
           pan: {
             enabled: true,
             mode: "x",
+            onPanComplete: () => {
+              console.log(chartRef.current);
+            },
           },
           limits: {
             x: {
