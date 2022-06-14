@@ -9,14 +9,6 @@ function ChartControls({
   graphPeriods,
   sliderRange,
 }) {
-  // const [sliderRange, setSliderRange] = useState(getSliderRange());
-
-  // function getSliderRange() {
-  //   if (!graphPeriods) return;
-  //   const range = chartRef.current.scales.x.ticks;
-  //   return range.length;
-  // }
-
   const actions = [
     {
       name: "Scroll left",
@@ -83,41 +75,6 @@ function ChartControls({
     chartRef.current.pan({ x: panAmount }, undefined, "none");
 
     e.target.blur();
-
-    // if (!chartRef || !graphPeriods) return;
-    // const ScrollPercent = (value / graphPeriods.length) * 100;
-    // let scale = sliderRange / graphPeriods.length;
-    // const { ticks } = chartRef.current.scales.x;
-    // if (ticks && ticks.length) {
-    //   scale = scale / ticks.length;
-    // }
-    // const halfRange = Math.floor(sliderRange / 2);
-    // const chartWidth = chartRef.current.width / 100;
-    // const panAmount =
-    //   value > sliderValue
-    //     ? chartWidth * ScrollPercent
-    //     : chartWidth * ScrollPercent * -1;
-
-    // if (!ticks.length) return;
-    // if (value <= halfRange) {
-    //   value += halfRange;
-    // }
-    // if (halfRange >= 100 - value) {
-    //   value -= halfRange;
-    // }
-    // const periodStart = getPeriod(value);
-    // const periodMid = getPeriod(value);
-    // const periodEnd = getPeriod(value + sliderRange);
-    // console.log("periodStart, periodEnd", periodStart, periodEnd);
-    // chartRef.current.zoomScale(
-    //   "x",
-    //   {
-    //     min: new Date(periodStart).getTime(),
-    //     max: new Date(periodEnd).getTime(),
-    //   },
-    //   "none"
-    // );
-    // chartRef.current.pan({ x: panAmount }, undefined, "none");
   };
   return (
     <>
