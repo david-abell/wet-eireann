@@ -1,25 +1,21 @@
-import { ButtonToolbar, ButtonGroup, Button, Form } from "react-bootstrap";
+import { ButtonToolbar, Form } from "react-bootstrap";
 import React, { useRef, useState, useEffect } from "react";
 import ChartButton from "./ChartButton";
-import { add, sub } from "date-fns";
 
 function ChartControls({
   chartRef,
-  minRange,
-  maxRange,
-  setMinRange,
-  setMaxRange,
   sliderValue,
   setSliderValue,
   graphPeriods,
+  sliderRange,
 }) {
-  const [sliderRange, setSliderRange] = useState(getSliderRange());
+  // const [sliderRange, setSliderRange] = useState(getSliderRange());
 
-  function getSliderRange() {
-    if (!graphPeriods) return;
-    const range = chartRef.current.scales.x.ticks;
-    return range.length;
-  }
+  // function getSliderRange() {
+  //   if (!graphPeriods) return;
+  //   const range = chartRef.current.scales.x.ticks;
+  //   return range.length;
+  // }
 
   const actions = [
     {
@@ -125,14 +121,14 @@ function ChartControls({
   };
   return (
     <>
-      <Form.Range
-        min={0}
-        max={100}
-        // min={minRange}
-        // max={maxRange}
-        value={sliderValue.current}
-        onChange={handleSlider}
-      />
+      {sliderRange && (
+        <Form.Range
+          min={0}
+          max={100}
+          value={sliderValue.current}
+          onChange={handleSlider}
+        />
+      )}
 
       <ButtonToolbar className="m-auto">
         {actions.map((props) => {
