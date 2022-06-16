@@ -1,8 +1,5 @@
 import React, { useRef, useEffect, useState, useMemo } from "react";
 import ChartControls from "./ChartControls";
-// import { enGB } from "date-fns/locale";
-// import "chartjs-adapter-date-fns";
-// import { add, sub, format, parse } from "date-fns";
 import "chartjs-adapter-luxon";
 import { DateTime } from "luxon";
 import "../styles/chartControls.css";
