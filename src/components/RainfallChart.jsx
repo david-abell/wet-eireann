@@ -39,77 +39,6 @@ ChartJS.register(
 
 function RainfallChart({ precipChance, graphPeriods, precipAmount }) {
   const chartRef = useRef(null);
-  // const [minRange, setMinRange] = useState(initRange(0));
-  // const [maxRange, setMaxRange] = useState(initRange(-1));
-  // const [minMeanRange, setMinMeanRange] = useState(initMeanRange(0));
-  // const [maxMeanRange, setMaxMeanRange] = useState(initMeanRange(-1));
-  const [sliderValue, setSliderValue] = useState({ current: 0, old: null });
-  const [sliderRange, setSliderRange] = useState(null);
-  // const [sliderRange, setSliderRange] = useState(getSliderRange());
-
-  // function getSliderRange() {
-  //   if (!graphPeriods || !chartRef.current) return;
-  //   const range = chartRef.current.scales.x.ticks;
-  //   return range.length;
-  // }
-
-  useEffect(() => {
-    const visibleTicks = chartRef?.current?.scales?.x?.ticks;
-    if (!visibleTicks) return;
-    setSliderRange(visibleTicks.length);
-  }, [chartRef, setSliderRange]);
-
-  function initRange(index) {
-    if (graphPeriods.at(index)) {
-      return new Date(graphPeriods.at(index)).getTime();
-    }
-  }
-  // function initMeanRange(index) {
-  //   // expect start and end indexses, 0 or -1 only
-  //   const range1 = initRange(index);
-  //   const range2 = !index
-  //     ? add(new Date(graphPeriods.at(0)), { days: 3 }).getTime()
-  //     : sub(new Date(graphPeriods.at(-1)), { days: 3 }).getTime();
-  //   return range1 && range2 && (range1 + range2) / 2;
-  // }
-
-  function calcSliderValueFromRange() {
-    // console.log(chartRef.current);
-
-    // Time zone error off by one hour here
-    const firstVisibleValue = chartRef.current.scales.x.ticks[0].value;
-    // console.log(new Date(firstVisibleValue));
-    // console.log(new Date(graphPeriods[0]));
-    // console.log(new Date(graphPeriods[0]).getTimezoneOffset());
-    // console.log(
-    //   graphPeriods[0],
-    //   parse(graphPeriods[0], "yyyy-MM-dd'T'HH:mm:ss'Z'", new Date())
-    // );
-    // console.log(DateTime.fromISO(graphPeriods[0], { zone: "utc" }).toString());
-    // console.log(
-    //   firstVisibleValue,
-    //   parse(firstVisibleValue, "yyyy-MM-dd'T'HH:mm:ss'Z'", new Date())
-    // );
-    // console.log(new Date(graphPeriods[0]));
-    // console.log(graphPeriods[0]);
-    // console.log(new Date("2022-06-08T20:00:00Z").getTime());
-    // console.log(
-    //   firstVisibleValue,
-    //   format(firstVisibleValue, "yyyy-MM-dd'T'HH:mm:ss'Z'")
-    // );
-    // console.log("first period value:", new Date(graphPeriods[0]).getTime());
-
-    const nextValue = sliderValue.current;
-    const current = sliderValue.old;
-    const sliderPercent =
-      (Math.max(nextValue, current) - Math.min(nextValue, current)) / 100;
-    const visibleWidth =
-      chartRef.current.chartArea.width / (sliderRange / graphPeriods.length);
-    const panAmount =
-      nextValue > current
-        ? sliderPercent * visibleWidth * -1
-        : sliderPercent * visibleWidth;
-  }
 
   const options = useMemo(
     () => ({
@@ -196,7 +125,6 @@ function RainfallChart({ precipChance, graphPeriods, precipAmount }) {
           pan: {
             enabled: true,
             mode: "x",
-            onPanComplete: calcSliderValueFromRange,
           },
           limits: {
             x: {
@@ -260,19 +188,7 @@ function RainfallChart({ precipChance, graphPeriods, precipAmount }) {
             ref={chartRef}
           />
         </Container>
-        {chartRef.current && (
-          <ChartControls
-            chartRef={chartRef}
-            // minRange={minMeanRange}
-            // maxRange={maxMeanRange}
-            // setMinRange={setMinMeanRange}
-            // setMaxRange={setMaxMeanRange}
-            sliderValue={sliderValue}
-            setSliderValue={setSliderValue}
-            graphPeriods={graphPeriods}
-            sliderRange={sliderRange}
-          />
-        )}
+        {chartRef.current && <ChartControls chartRef={chartRef} />}
       </Stack>
     </>
   );
