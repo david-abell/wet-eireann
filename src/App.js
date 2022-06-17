@@ -1,10 +1,13 @@
 import "./App.css";
 import React, { useState, useEffect } from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Stack } from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
 import { XMLParser } from "fast-xml-parser";
 import sampleData from "./sampleData2.xml";
 import TodayCard from "./components/TodayCard";
 import RainfallChart from "./components/RainfallChart";
+import WeatherSymbol from "./components/WeatherSymbol";
+import forecastSymbols from "./schema/forecastSymbols";
 
 // const weatherUrl =
 //   "http://localhost:8010/proxy/metno-wdb2ts/locationforecast?lat=54.7210798611;long=-8.7237392806";
@@ -74,27 +77,25 @@ function App() {
     setGraphPeriods(periods);
   }, [weatherData, setGraphPeriods]);
   return (
-    <div className="App">
-      <Container>
-        <Row>
-          <Col className="chart-container">
-            {precipChance.length && graphPeriods.length && (
-              <RainfallChart
-                precipChance={precipChance}
-                graphPeriods={graphPeriods}
-                precipAmount={precipAmount}
-              />
-            )}
-          </Col>
-        </Row>
-      </Container>
-      {/* {weatherData.pointData.length && (
+    <Stack className="App gap-5 py-5">
+      {precipChance.length && graphPeriods.length && (
+        <RainfallChart
+          precipChance={precipChance}
+          graphPeriods={graphPeriods}
+          precipAmount={precipAmount}
+        />
+      )}
+      {weatherData.pointData.length && (
         <>
           <TodayCard pointData={weatherData.pointData[0].location} />
-          <TodayCard pointData={weatherData.pointData[1].location} />
         </>
-      )} */}
-    </div>
+      )}
+      {Object.entries(forecastSymbols).map(([key, value]) => {
+        return (
+          <WeatherSymbol key={key} spriteName={key} spritePosition={value} />
+        );
+      })}
+    </Stack>
   );
   // return (
   //   <div className="App">
