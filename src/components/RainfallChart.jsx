@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState, useMemo } from "react";
 import ChartControls from "./ChartControls";
 import "chartjs-adapter-luxon";
 import { DateTime } from "luxon";
-import "../styles/chartControls.css";
+import "../styles/RainfallChart.css";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -175,19 +175,23 @@ function RainfallChart({ precipChance, graphPeriods, precipAmount }) {
     backgroundColor: "rgb(255, 99, 132)",
   };
   return (
-    <>
-      <Stack>
-        <Container className="chart-container">
+    <Container className="">
+      <Row className="">
+        <Col className="chart-container">
           <Line
             data={data}
             key="Precipitation"
             options={options}
             ref={chartRef}
           />
-        </Container>
-        {chartRef.current && <ChartControls chartRef={chartRef} />}
-      </Stack>
-    </>
+        </Col>
+      </Row>
+      <Row className="pt-5 ">
+        <Col className="align-self-center mx-auto">
+          {chartRef.current && <ChartControls chartRef={chartRef} />}
+        </Col>
+      </Row>
+    </Container>
   );
 }
 

@@ -38,7 +38,7 @@ function ChartControls({ chartRef }) {
 
   return (
     <>
-      <ButtonToolbar className="m-auto">
+      <ButtonToolbar className="">
         {actions.map((props) => {
           return (
             <ChartButton {...props} key={props.name} chartRef={chartRef} />
