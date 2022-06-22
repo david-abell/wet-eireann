@@ -1,5 +1,5 @@
 .weather-symbol {
-  display: block;
-  height: 96px;
-  width: 96px;
+  height: 4rem;
+  width: 4rem;
+  background-color: rgba(220, 236, 249, 0.5);
 }
