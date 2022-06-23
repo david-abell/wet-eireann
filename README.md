@@ -25,7 +25,7 @@
 CLI script:
 
 ```
-npx @svgr/cli --out-dir ./wet-eireann/src/components/icons --no-dimensions ./weather-icons-optimized --svg-props viewBox="0 0 96 96"
+npx @svgr/cli --out-dir ./icons2optimized --no-dimensions ./icons2 --svg-props viewBox="0 0 96 96"
 ```
 
 ## Installation
