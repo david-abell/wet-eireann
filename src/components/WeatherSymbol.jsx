@@ -6,7 +6,7 @@ import {
   DrizzleSun,
   DrizzleThunder,
   DrizzleThunderSun,
-  Error,
+  ErrorNoMatchingIcon,
   Fog,
   HeavySleet,
   HeavySleetSun,
@@ -52,7 +52,7 @@ const icons = {
   DrizzleSun,
   DrizzleThunder,
   DrizzleThunderSun,
-  Error,
+  ErrorNoMatchingIcon,
   Fog,
   HeavySleet,
   HeavySleetSun,
@@ -93,7 +93,9 @@ const icons = {
 };
 
 function WeatherSymbol({ symbolName }) {
-  const CurrentIcon = icons[symbolName];
+  const CurrentIcon = icons?.[symbolName] || icons.ErrorNoMatchingIcon;
+  // const CurrentIcon = icons?.[symbolName] || icons.ErrorNoMatchingIcon;
+  console.log(symbolName);
   return (
     <>
       <div className="weather-symbol">

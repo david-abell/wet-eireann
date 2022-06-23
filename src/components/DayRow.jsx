@@ -1,22 +1,19 @@
 import HourList from "./HourList";
 import { Row, Col } from "react-bootstrap";
+import { Accordion } from "react-bootstrap";
 
-function DayRow({ day }) {
+function DayRow({ day, eventKey }) {
   const [date, data] = day;
   return (
-    <>
-      <Row key={date}>
-        <Col>
-          <h3>{date}</h3>
-        </Col>
-      </Row>
-      <>
-        {data &&
-          data.map((el) => {
-            return <HourList hourData={el} />;
-          })}
-      </>
-    </>
+    <Accordion.Item eventKey={eventKey} key={date}>
+      <Accordion.Header>
+        <Col>{date}</Col>
+      </Accordion.Header>
+      {data &&
+        data.map((el, index) => {
+          return <HourList hourData={el} date={date} key={date + index} />;
+        })}
+    </Accordion.Item>
   );
 }
 

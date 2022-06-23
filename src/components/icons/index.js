@@ -3,7 +3,7 @@ export { default as Drizzle } from "./Drizzle";
 export { default as DrizzleSun } from "./DrizzleSun";
 export { default as DrizzleThunder } from "./DrizzleThunder";
 export { default as DrizzleThunderSun } from "./DrizzleThunderSun";
-export { default as Error } from "./Error";
+export { default as ErrorNoMatchingIcon } from "./ErrorNoMatchingIcon";
 export { default as Fog } from "./Fog";
 export { default as HeavySleet } from "./HeavySleet";
 export { default as HeavySleetSun } from "./HeavySleetSun";

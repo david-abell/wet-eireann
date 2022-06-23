@@ -1,14 +1,15 @@
 import DayRow from "./DayRow";
 import { Container } from "react-bootstrap";
+import { Accordion } from "react-bootstrap";
 
 function DayList({ dayData }) {
   return (
-    <Container>
+    <Accordion defaultActiveKey={["0"]} alwaysOpen>
       {dayData &&
-        Object.entries(dayData).map((el) => {
-          return <DayRow day={el} />;
+        Object.entries(dayData).map((el, index) => {
+          return <DayRow day={el} eventKey={String(index)} key={el[0]} />;
         })}
-    </Container>
+    </Accordion>
   );
 }
 

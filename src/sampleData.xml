@@ -26,7 +26,8 @@
     <time datatype="forecast" from="2022-06-03T12:00:00Z" to="2022-06-03T13:00:00Z">
       <location altitude="9" latitude="54.7211" longitude="-8.7237">
         <precipitation unit="mm" value="0.0" minvalue="0.0" maxvalue="0.1" probability="6.4" />
-        <symbol id="PartlyCloud" number="3" />
+        <symbol id="BadIconName" number="3" />
+        <!-- <symbol id="PartlyCloud" number="3" /> -->
       </location>
     </time>
     <time datatype="forecast" from="2022-06-03T14:00:00Z" to="2022-06-03T14:00:00Z">

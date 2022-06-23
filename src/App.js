@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Stack } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { XMLParser } from "fast-xml-parser";
-import sampleData from "./sampleData2.xml";
+import sampleData from "./sampleData.xml";
 import TodayCard from "./components/TodayCard";
 import RainfallChart from "./components/RainfallChart";
 // import WeatherSymbol from "./components/WeatherSymbol";
@@ -73,7 +73,7 @@ function App() {
       const toTimeStamp = DateTime.fromISO(to);
       // console.log(timeStamp, toTimeStamp);
       const timeDiff = toTimeStamp.diff(timeStamp, ["months", "days", "hours"]);
-      const elDay = timeStamp.toLocaleString(DateTime.DATE_SHORT);
+      const elDay = timeStamp.toFormat("EEEE, MMMM d");
       // console.log(elDay);
       const { months, days, hours } = timeDiff.values;
       if (dayChunks[elDay]) {
@@ -95,7 +95,6 @@ function App() {
     setDayData({
       ...dayChunks,
     });
-    console.log(dayData);
     precipitationData.forEach((el) => {
       const { from, to } = el;
       // const timeStamp = DateTime.fromISO(from);
@@ -122,15 +121,15 @@ function App() {
     setGraphPeriods(periods);
   }, [weatherData, setGraphPeriods]);
   return (
-    <Stack className="App gap-5 py-5">
+    <Container className="App gap-5 py-5">
       <DayList dayData={dayData} />
-      {/* {precipChance.length && graphPeriods.length && (
+      {precipChance.length && graphPeriods.length && (
         <RainfallChart
           precipChance={precipChance}
           graphPeriods={graphPeriods}
           precipAmount={precipAmount}
         />
-      )} */}
+      )}
       {/* {weatherData.pointData.length && (
         <>
           <TodayCard pointData={weatherData.pointData[1].location} />
@@ -141,7 +140,7 @@ function App() {
           <WeatherSymbol key={key} spriteName={key} spritePosition={value} />
         );
       })} */}
-    </Stack>
+    </Container>
   );
   // return (
   //   <div className="App">
