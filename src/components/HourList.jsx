@@ -9,7 +9,7 @@ function HourList({ hourData, date }) {
     DateTime.TIME_SIMPLE
   );
   return (
-    <Accordion.Body>
+    <Accordion.Body className="border-bottom">
       <HourRow hour={hour} hourData={hourData} />
       {/* <>
         {hours &&

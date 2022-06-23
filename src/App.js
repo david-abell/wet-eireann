@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Stack } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { XMLParser } from "fast-xml-parser";
-import sampleData from "./sampleData.xml";
+import sampleData from "./sampleData2.xml";
 import TodayCard from "./components/TodayCard";
 import RainfallChart from "./components/RainfallChart";
 // import WeatherSymbol from "./components/WeatherSymbol";

@@ -28,6 +28,7 @@ export { default as LightSnowThunder } from "./LightSnowThunder";
 export { default as LightSnowThunderSun } from "./LightSnowThunderSun";
 export { default as PartlyCloud } from "./PartlyCloud";
 export { default as Rain } from "./Rain";
+export { default as Raindrops } from "./Raindrops";
 export { default as RainSun } from "./RainSun";
 export { default as RainThunder } from "./RainThunder";
 export { default as RainThunderSun } from "./RainThunderSun";

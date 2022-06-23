@@ -31,6 +31,7 @@ import {
   LightSnowThunderSun,
   PartlyCloud,
   Rain,
+  Raindrops,
   RainSun,
   RainThunder,
   RainThunderSun,
@@ -77,6 +78,7 @@ const icons = {
   LightSnowThunderSun,
   PartlyCloud,
   Rain,
+  Raindrops,
   RainSun,
   RainThunder,
   RainThunderSun,
@@ -101,7 +103,7 @@ function WeatherSymbol({ symbolName }) {
       <div className="weather-symbol">
         <CurrentIcon />
       </div>
-      <p>{symbolName}</p>
+      {/* <p>{symbolName}</p> */}
     </>
   );
 }
