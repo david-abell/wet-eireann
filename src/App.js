@@ -60,21 +60,14 @@ function App() {
     let dayChunks = {};
     let chunkedData = chunkArray(weatherData.pointData, 2);
     const precipitationData = chunkedData.map((el) => {
-      // console.log(el);
       return el[1];
     });
-    // const precipitationData = weatherData.pointData.filter((el, index) => {
-    //   return el.location.precipitation;
-    // });
-    // console.log(precipitationData);
     chunkedData.forEach((el) => {
       const { from, to } = el[1];
       const timeStamp = DateTime.fromISO(from);
       const toTimeStamp = DateTime.fromISO(to);
-      // console.log(timeStamp, toTimeStamp);
       const timeDiff = toTimeStamp.diff(timeStamp, ["months", "days", "hours"]);
       const elDay = timeStamp.toFormat("EEEE, MMMM d");
-      // console.log(elDay);
       const { months, days, hours } = timeDiff.values;
       if (dayChunks[elDay]) {
         dayChunks[elDay] = [...dayChunks[elDay], el];
@@ -91,17 +84,11 @@ function App() {
         sixHourChunks.push(el);
       }
     });
-    // console.log(chunkedData);
     setDayData({
       ...dayChunks,
     });
     precipitationData.forEach((el) => {
       const { from, to } = el;
-      // const timeStamp = DateTime.fromISO(from);
-      // const toTimeStamp = DateTime.fromISO(to);
-      // console.log(timeStamp, toTimeStamp);
-      // const timeDiff = toTimeStamp.diff(timeStamp, ["months", "days", "hours"]);
-      // const { months, days, hours } = timeDiff.values;
       const {
         location: {
           precipitation: { value, minvalue, maxvalue, probability },
@@ -121,8 +108,8 @@ function App() {
     setGraphPeriods(periods);
   }, [weatherData, setGraphPeriods]);
   return (
-    <Container className="App gap-5 py-5">
-      <DayList dayData={dayData} />
+    <Container className="App py-5 d-grid gap-5">
+      <DayList dayData={dayData} className="mb-5" />
       {precipChance.length && graphPeriods.length && (
         <RainfallChart
           precipChance={precipChance}

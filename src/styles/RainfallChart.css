@@ -1,5 +1,5 @@
 .chart-container {
   /* position: relative; */
-  height: 600px;
+  min-height: 400px;
   /* width: 800px; */
 }
