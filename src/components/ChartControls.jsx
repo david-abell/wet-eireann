@@ -38,7 +38,7 @@ function ChartControls({ chartRef }) {
 
   return (
     <>
-      <ButtonToolbar className="">
+      <ButtonToolbar className="justify-content-center">
         {actions.map((props) => {
           return (
             <ChartButton {...props} key={props.name} chartRef={chartRef} />
