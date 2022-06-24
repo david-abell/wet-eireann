@@ -96,7 +96,7 @@ function RainfallChart({ precipChance, graphPeriods, precipAmount }) {
           },
           min: graphPeriods.at(0), // utc date string without timezone, example: "2022-06-08T20:00:00Z"
           max: DateTime.fromISO(graphPeriods.at(0))
-            .plus({ days: 2 })
+            .plus({ days: 1 })
             .toFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", { zone: "utc" }), // result is utc date string without timezone example: "2022-06-08T20:00:00Z"
         },
       },
@@ -105,7 +105,7 @@ function RainfallChart({ precipChance, graphPeriods, precipAmount }) {
           position: "top",
         },
         title: {
-          display: true,
+          display: false,
           text: "Precipitation outlook",
         },
         tooltip: {
@@ -175,9 +175,9 @@ function RainfallChart({ precipChance, graphPeriods, precipAmount }) {
     backgroundColor: "rgb(255, 99, 132)",
   };
   return (
-    <Container>
+    <Container className="p-5 rounded-3">
       <Row>
-        <Col className="chart-container border">
+        <Col className="chart-container">
           <Line
             data={data}
             key="Precipitation"
@@ -187,9 +187,7 @@ function RainfallChart({ precipChance, graphPeriods, precipAmount }) {
         </Col>
       </Row>
       <Row className="pt-5 ">
-        <Col className="align-self-center mx-auto">
-          {chartRef.current && <ChartControls chartRef={chartRef} />}
-        </Col>
+        <Col>{chartRef.current && <ChartControls chartRef={chartRef} />}</Col>
       </Row>
     </Container>
   );
