@@ -1,4 +1,4 @@
-import HourList from "./HourList";
+import HourBody from "./HourBody";
 import { Row, Col } from "react-bootstrap";
 import { Accordion } from "react-bootstrap";
 
@@ -11,7 +11,7 @@ function DayRow({ day, eventKey }) {
       </Accordion.Header>
       {data &&
         data.map((el, index) => {
-          return <HourList hourData={el} date={date} key={date + index} />;
+          return <HourBody hourData={el} date={date} key={date + index} />;
         })}
     </Accordion.Item>
   );

@@ -1,5 +1,4 @@
 import DayRow from "./DayRow";
-import { Container } from "react-bootstrap";
 import { Accordion } from "react-bootstrap";
 
 function DayList({ dayData }) {

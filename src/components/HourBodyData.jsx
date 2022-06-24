@@ -1,7 +1,7 @@
 import { Row, Col } from "react-bootstrap";
 import WeatherSymbol from "./WeatherSymbol";
 
-function HourRow({ hour, hourData }) {
+function HourBodyData({ hour, hourData }) {
   const temperature = hourData[0].location.temperature.value;
   const symbolName = hourData[1].location.symbol.id;
   const precipChance = hourData[1].location.precipitation.value;
@@ -51,4 +51,4 @@ function HourRow({ hour, hourData }) {
   );
 }
 
-export default HourRow;
+export default HourBodyData;
