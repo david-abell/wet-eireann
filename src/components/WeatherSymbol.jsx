@@ -94,14 +94,18 @@ const icons = {
   Wind,
 };
 
-function WeatherSymbol({ symbolName }) {
+function WeatherSymbol({ symbolName, rotateDegree }) {
   const CurrentIcon = icons?.[symbolName] || icons.ErrorNoMatchingIcon;
+  const isWind = symbolName === "Wind";
   // const CurrentIcon = icons?.[symbolName] || icons.ErrorNoMatchingIcon;
-  console.log(symbolName);
   return (
     <>
       <div className="weather-symbol">
-        <CurrentIcon />
+        <CurrentIcon
+          style={{
+            transform: isWind && `rotate(${rotateDegree}deg) scale(-1,-1)`,
+          }}
+        />
       </div>
       {/* <p>{symbolName}</p> */}
     </>
