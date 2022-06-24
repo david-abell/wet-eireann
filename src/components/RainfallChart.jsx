@@ -175,7 +175,7 @@ function RainfallChart({ precipChance, graphPeriods, precipAmount }) {
     backgroundColor: "rgb(255, 99, 132)",
   };
   return (
-    <Container className="p-5 rounded-3">
+    <Container className="p-5 rounded-3 bg-light">
       <Row>
         <Col className="chart-container">
           <Line
