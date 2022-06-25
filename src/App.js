@@ -11,12 +11,16 @@ import RainfallChart from "./components/RainfallChart";
 import { DateTime } from "luxon";
 import { chunkArray } from "./utilities/helpers";
 import DayList from "./components/DayList";
-
+import TopNav from "./components/TopNav";
 // const weatherUrl =
-//   "http://localhost:8010/proxy/metno-wdb2ts/locationforecast?lat=54.7210798611;long=-8.7237392806";
+//   "http://localhost:8010/proxy/metno-wdb2ts/locationforecast?lat=51.8985;long=-8.4756";
 const weatherUrl = sampleData;
 
 function App() {
+  const [geoLocation, setGeoLocation] = useState({
+    lat: 51.8985,
+    long: 8.4756,
+  });
   const [weatherData, setWeatherData] = useState({
     created: "",
     pointData: [],
@@ -108,26 +112,29 @@ function App() {
     setGraphPeriods(periods);
   }, [weatherData, setGraphPeriods]);
   return (
-    <Container className="App py-5 d-grid gap-5">
-      <DayList dayData={dayData} className="mb-5" />
-      {precipChance.length && graphPeriods.length && (
-        <RainfallChart
-          precipChance={precipChance}
-          graphPeriods={graphPeriods}
-          precipAmount={precipAmount}
-        />
-      )}
-      {/* {weatherData.pointData.length && (
+    <>
+      <TopNav />
+      <Container className="App py-5 d-grid gap-5">
+        <DayList dayData={dayData} className="mb-5" />
+        {precipChance.length && graphPeriods.length && (
+          <RainfallChart
+            precipChance={precipChance}
+            graphPeriods={graphPeriods}
+            precipAmount={precipAmount}
+          />
+        )}
+        {/* {weatherData.pointData.length && (
         <>
           <TodayCard pointData={weatherData.pointData[1].location} />
         </>
       )} */}
-      {/* {Object.entries(forecastSymbols).map(([key, value]) => {
+        {/* {Object.entries(forecastSymbols).map(([key, value]) => {
         return (
           <WeatherSymbol key={key} spriteName={key} spritePosition={value} />
         );
       })} */}
-    </Container>
+      </Container>
+    </>
   );
   // return (
   //   <div className="App">
