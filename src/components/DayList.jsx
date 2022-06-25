@@ -9,10 +9,13 @@ function DayList({ dayData }) {
       className="rounded-3"
       id="daily-forecast"
     >
-      {dayData &&
+      {Object.keys(dayData).length ? (
         Object.entries(dayData).map((el, index) => {
           return <DayRow day={el} eventKey={String(index)} key={el[0]} />;
-        })}
+        })
+      ) : (
+        <span>Loading</span>
+      )}
     </Accordion>
   );
 }
