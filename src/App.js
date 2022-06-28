@@ -4,7 +4,7 @@ import { Container, Row, Col, Stack } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { XMLParser } from "fast-xml-parser";
 import sampleData from "./sampleData2.xml";
-import TodayCard from "./components/TodayCard";
+// import TodayCardold from "./components/TodayCardold";
 import RainfallChart from "./components/RainfallChart";
 // import WeatherSymbol from "./components/WeatherSymbol";
 // import forecastSymbols from "./utilities/getForecastSymbolPosition";
@@ -12,14 +12,16 @@ import { DateTime } from "luxon";
 import { chunkArray } from "./utilities/helpers";
 import DayList from "./components/DayList";
 import TopNav from "./components/TopNav";
+import TodayCard from "./components/TodayCard";
 // const weatherUrl =
 //   "http://localhost:8010/proxy/metno-wdb2ts/locationforecast?lat=51.8985;long=-8.4756";
-const weatherUrl = sampleData;
+// const weatherUrl = sampleData;
 
 function App() {
   const [geoLocation, setGeoLocation] = useState({
+    name: "Cork, Ireland",
     lat: 51.8985,
-    long: 8.4756,
+    long: -8.4756,
   });
   const [weatherData, setWeatherData] = useState({
     created: "",
@@ -42,17 +44,27 @@ function App() {
         ignoreAttributes: false,
         ignoreNameSpace: false,
       });
-
-      const response = await fetch(weatherUrl, { mode: "cors" });
-      const result = await response.text();
-      const data = parser.parse(result).weatherdata;
-      const created = data.created;
-      const pointData = data.product.time;
-      setWeatherData({ ...weatherData, created, pointData });
+      const url = sampleData;
+      // const url = `http://localhost:8010/proxy/metno-wdb2ts/locationforecast?lat=${geoLocation.lat};long=${geoLocation.long}`;
+      try {
+        const response = await fetch(url, { mode: "cors" });
+        if (!response.ok) {
+          throw new Error(response.statusText);
+        }
+        const result = await response.text();
+        const data = parser.parse(result).weatherdata;
+        const created = data.created;
+        const pointData = data.product.time;
+        setWeatherData((data) => {
+          return { ...data, created, pointData };
+        });
+      } catch (error) {
+        console.log(error);
+      }
     }
     fetchWeather();
     return () => (isApiSubscribed = true);
-  }, [setWeatherData]);
+  }, [setWeatherData, geoLocation]);
 
   useEffect(() => {
     let precipChances = [];
@@ -113,16 +125,16 @@ function App() {
   }, [weatherData, setGraphPeriods]);
   return (
     <>
-      <TopNav />
+      <TopNav geoLocation={geoLocation} setGeoLocation={setGeoLocation} />
       <Container className="App py-5 d-grid gap-5">
+        <TodayCard geoLocation={geoLocation} dayData={dayData}></TodayCard>
         <DayList dayData={dayData} className="mb-5" />
-        {precipChance.length && graphPeriods.length && (
-          <RainfallChart
-            precipChance={precipChance}
-            graphPeriods={graphPeriods}
-            precipAmount={precipAmount}
-          />
-        )}
+        {/* <RainfallChart
+          precipChance={precipChance}
+          graphPeriods={graphPeriods}
+          precipAmount={precipAmount}
+        /> */}
+
         {/* {weatherData.pointData.length && (
         <>
           <TodayCard pointData={weatherData.pointData[1].location} />

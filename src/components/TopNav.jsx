@@ -1,6 +1,6 @@
 import { Navbar, Nav, Container, Form, Button } from "react-bootstrap";
-
-function TopNav() {
+import MapSearch from "./MapSearch";
+function TopNav({ geoLocation, setGeoLocation }) {
   return (
     <Navbar expand="md" bg="light">
       <Container className="d-flex justify-content-between gap-2">
@@ -15,7 +15,8 @@ function TopNav() {
             <Nav.Link href="#weather-graph">Weather Graph</Nav.Link>
           </Nav>
         </Navbar.Collapse>
-        <Form className="ms-auto d-flex flex-grow-1">
+        <MapSearch geoLocation={geoLocation} setGeoLocation={setGeoLocation} />
+        {/* <Form className="ms-auto d-flex flex-grow-1">
           <Form.Group
             controlId="locationSearch"
             className="me-4 ms-auto d-flex"
@@ -23,7 +24,7 @@ function TopNav() {
             <Form.Control type="search" className="me-2"></Form.Control>
             <Button type="submit">Search</Button>
           </Form.Group>
-        </Form>
+        </Form> */}
       </Container>
     </Navbar>
   );

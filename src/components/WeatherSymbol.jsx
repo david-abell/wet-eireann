@@ -1,4 +1,3 @@
-import "../styles/WeatherSymbol.css";
 import "../assets/sprite-sheet.svg";
 import {
   Cloud,
@@ -94,19 +93,20 @@ const icons = {
   Wind,
 };
 
-function WeatherSymbol({ symbolName, rotateDegree }) {
+function WeatherSymbol({ symbolName, rotateDegree, size = "4rem" }) {
   const CurrentIcon = icons?.[symbolName] || icons.ErrorNoMatchingIcon;
   const isWind = symbolName === "Wind";
   // const CurrentIcon = icons?.[symbolName] || icons.ErrorNoMatchingIcon;
   return (
     <>
-      <div className="weather-symbol">
-        <CurrentIcon
-          style={{
-            transform: isWind && `rotate(${rotateDegree}deg) scale(-1,-1)`,
-          }}
-        />
-      </div>
+      {/* <div className="weather-symbol"> */}
+      <CurrentIcon
+        style={{
+          transform: isWind && `rotate(${rotateDegree}deg) scale(-1,-1)`,
+          height: size,
+        }}
+      />
+      {/* </div> */}
       {/* <p>{symbolName}</p> */}
     </>
   );
