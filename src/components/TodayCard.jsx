@@ -6,23 +6,26 @@ import {
   getMinRoundedValue,
   getMaxRoundedValue,
   getAverageRoundedValue,
+  getFrequentString,
 } from "../utilities/helpers";
-
+import FlexColumnWrapper from "./FlexColumnWrapper";
+import SimpleColumnInner from "./SimpleColumnInner";
 function TodayCard({ geoLocation, dayData }) {
   const [date, setDate] = useState("");
   const [data, setData] = useState(null);
 
   const todayData = useMemo(() => {
     if (dayData && Object.keys(dayData).length) {
-      const data = Object.entries(dayData)[0];
+      console.log(dayData);
+      const testdata = Object.entries(dayData)[0];
       const result = {};
-      result.pointData = data[1][0][0].location;
-      result.rangeData = data[1][0][1].location;
+      result.pointData = testdata[1][0][0].location;
+      result.rangeData = testdata[1][0][1].location;
       result.symbolName = result.rangeData.symbol.id;
-      result.date = data[0];
+      result.date = testdata[0];
       console.log(Object.keys(dayData)[0]);
-      console.log(getDayMinMaxAverages(Object.values(dayData)[4]));
-      const [targetDate, targetData] = Object.entries(dayData)[3];
+      console.log(getDayMinMaxAverages(Object.values(dayData)[5]));
+      const [targetDate, targetData] = Object.entries(dayData)[0];
       setDate(targetDate);
       setData(getDayMinMaxAverages(targetData));
       return result;
@@ -32,89 +35,86 @@ function TodayCard({ geoLocation, dayData }) {
 
   return (
     <Accordion
-      className="p-5 p-md-0 rounded-3 bg-light"
-      defaultActiveKey={["0"]}
+      className="p-md-0 rounded-3 bg-light"
+      defaultActiveKey={"0"}
       alwaysOpen
     >
-      <Accordion.Item>
+      <Accordion.Item eventKey={"0"}>
         <Accordion.Header className="d-flex flex-column flex-md-row align-items-center justify-content-center">
-          {
-            <Col className="d-flex align-items-center justify-content-center flex-grow-1">
-              <Row className="text-center">
-                <Col sm={12}>
-                  {!todayData ? (
-                    <p>...loading forecast location</p>
-                  ) : (
-                    <>
-                      <p className="h1">{geoLocation.name}</p>
-                      <p className="h5">{date}</p>
-                    </>
-                  )}
-                </Col>
-              </Row>
+          <FlexColumnWrapper>
+            <Col sm={12}>
+              {!data ? (
+                <p>...loading forecast location</p>
+              ) : (
+                <>
+                  <p className="h1">{geoLocation.name}</p>
+                  <p className="h5">{date}</p>
+                </>
+              )}
             </Col>
-          }
-          <Col className="d-flex align-items-center justify-content-center p-0">
+          </FlexColumnWrapper>
+          <Col className="d-flex align-items-center justify-content-center">
             {data && (
-              <WeatherSymbol symbolName={todayData.symbolName} size={"12rem"} />
+              <WeatherSymbol symbolName={data.symbol[0]} size={"12rem"} />
             )}
           </Col>
-          <Col className="d-flex align-items-center justify-content-center">
-            <Row className="text-center">
+          {data && (
+            <FlexColumnWrapper>
               <Col sm={12}>
-                {data && (
-                  <>
-                    <Row>
-                      <Col sm={12}>
-                        <p className="h1">
-                          {getMaxRoundedValue(data.temperature)}&deg;C
-                        </p>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col sm={12}>
-                        <p className="h4">
-                          {getMinRoundedValue(data.temperature)}&deg;C
-                        </p>
-                      </Col>
-                    </Row>
-                  </>
-                )}
+                <Row>
+                  <Col sm={12}>
+                    <p className="h1">
+                      {getMaxRoundedValue(data.temperature)}&deg;C
+                    </p>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col sm={12}>
+                    <p className="h4">
+                      {getMinRoundedValue(data.temperature)}&deg;C
+                    </p>
+                  </Col>
+                </Row>
               </Col>
+            </FlexColumnWrapper>
+          )}
+          {/* <Col className="d-flex align-items-center justify-content-center">
+            <Row className="text-center">
             </Row>
-          </Col>
+          </Col> */}
         </Accordion.Header>
-        <Accordion.Body>
-          <p>This is the body</p>
-          <Col className="d-flex align-items-center justify-content-center">
-            <Row className="text-center">
-              <Col sm={12}>
-                {!!Object.keys(dayData).length && (
-                  <>
-                    <Row>
-                      <Col sm={12}>
-                        <p className="h5">Precipitation</p>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col sm={12}>
-                        {data && (
-                          <p className="h2">
-                            {getAverageRoundedValue(
-                              data.precipitation.probability
-                            )}
-                            % /{" "}
-                            {getMaxRoundedValue(data.precipitation.maxvalue)}
-                            mm
-                          </p>
-                        )}
-                      </Col>
-                    </Row>
-                  </>
-                )}
-              </Col>
-            </Row>
-          </Col>
+        <Accordion.Body className="d-flex flex-column flex-md-row align-items-center justify-content-center">
+          {data && (
+            <FlexColumnWrapper data={data}>
+              <SimpleColumnInner title={"Precipitation"}>
+                {getAverageRoundedValue(data.precipitation.probability) > 0
+                  ? `${getAverageRoundedValue(
+                      data.precipitation.probability
+                    )} % chance up to ${Math.max(
+                      ...data.precipitation.maxvalue
+                    )} mm`
+                  : "no precipitation expected"}
+              </SimpleColumnInner>
+            </FlexColumnWrapper>
+          )}
+          {data && (
+            <FlexColumnWrapper>
+              <SimpleColumnInner title={"Humidity"}>
+                {getMinRoundedValue(data.humidity)}
+                {" - "}
+                {getMaxRoundedValue(data.humidity)}%
+              </SimpleColumnInner>
+            </FlexColumnWrapper>
+          )}
+          {data && (
+            <FlexColumnWrapper>
+              <SimpleColumnInner title={"Pressure"}>
+                {getMinRoundedValue(data.pressure)}
+                {" - "}
+                {getMaxRoundedValue(data.pressure)}hPa
+              </SimpleColumnInner>
+            </FlexColumnWrapper>
+          )}
         </Accordion.Body>
       </Accordion.Item>
     </Accordion>
