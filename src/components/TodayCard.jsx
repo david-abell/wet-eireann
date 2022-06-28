@@ -98,13 +98,16 @@ function TodayCard({ geoLocation, dayData }) {
                     </Row>
                     <Row>
                       <Col sm={12}>
-                        <p className="h2">
-                          {getAverageRoundedValue(
-                            data.precipitation.probability
-                          )}
-                          % / {getMaxRoundedValue(data.precipitation.maxvalue)}
-                          mm
-                        </p>
+                        {data && (
+                          <p className="h2">
+                            {getAverageRoundedValue(
+                              data.precipitation.probability
+                            )}
+                            % /{" "}
+                            {getMaxRoundedValue(data.precipitation.maxvalue)}
+                            mm
+                          </p>
+                        )}
                       </Col>
                     </Row>
                   </>

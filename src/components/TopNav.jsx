@@ -15,7 +15,12 @@ function TopNav({ geoLocation, setGeoLocation }) {
             <Nav.Link href="#weather-graph">Weather Graph</Nav.Link>
           </Nav>
         </Navbar.Collapse>
-        <MapSearch geoLocation={geoLocation} setGeoLocation={setGeoLocation} />
+        {geoLocation && (
+          <MapSearch
+            geoLocation={geoLocation}
+            setGeoLocation={setGeoLocation}
+          />
+        )}
         {/* <Form className="ms-auto d-flex flex-grow-1">
           <Form.Group
             controlId="locationSearch"
