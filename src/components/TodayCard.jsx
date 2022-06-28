@@ -1,5 +1,5 @@
 import { Container, Row, Col, Accordion } from "react-bootstrap";
-import { useMemo, useCallback, useState } from "react";
+import { useMemo, useCallback, useState, useEffect } from "react";
 import WeatherSymbol from "./WeatherSymbol";
 import { getDayMinMaxAverages } from "../utilities/helpers";
 import {
@@ -14,7 +14,7 @@ function TodayCard({ geoLocation, dayData }) {
   const [date, setDate] = useState("");
   const [data, setData] = useState(null);
 
-  const todayData = useMemo(() => {
+  useEffect(() => {
     if (dayData && Object.keys(dayData).length) {
       console.log(dayData);
       const testdata = Object.entries(dayData)[0];
@@ -23,14 +23,12 @@ function TodayCard({ geoLocation, dayData }) {
       result.rangeData = testdata[1][0][1].location;
       result.symbolName = result.rangeData.symbol.id;
       result.date = testdata[0];
-      console.log(Object.keys(dayData)[0]);
-      console.log(getDayMinMaxAverages(Object.values(dayData)[5]));
+      // console.log(Object.keys(dayData)[0]);
+      // console.log(getDayMinMaxAverages(Object.values(dayData)[5]));
       const [targetDate, targetData] = Object.entries(dayData)[0];
       setDate(targetDate);
       setData(getDayMinMaxAverages(targetData));
-      return result;
     }
-    return null;
   }, [dayData]);
 
   return (
