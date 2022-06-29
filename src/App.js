@@ -124,10 +124,12 @@ function App() {
     setGraphPeriods(periods);
   }, [weatherData, setGraphPeriods]);
   return (
-    <>
+    <div className="App">
       <TopNav geoLocation={geoLocation} setGeoLocation={setGeoLocation} />
-      <Container className="App py-5 d-grid gap-5">
-        <TodayCard geoLocation={geoLocation} dayData={dayData}></TodayCard>
+      <Container className=" d-grid gap-5 pt-5">
+        {!!Object.keys(dayData).length && (
+          <TodayCard geoLocation={geoLocation} dayData={dayData}></TodayCard>
+        )}
         <DayList dayData={dayData} className="mb-5" />
         {/* <RainfallChart
           precipChance={precipChance}
@@ -146,7 +148,7 @@ function App() {
         );
       })} */}
       </Container>
-    </>
+    </div>
   );
   // return (
   //   <div className="App">

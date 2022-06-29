@@ -4,14 +4,16 @@ import { Accordion } from "react-bootstrap";
 function DayList({ dayData }) {
   return (
     <Accordion
-      defaultActiveKey={["0"]}
+      // defaultActiveKey={["daylist0"]}
       alwaysOpen
-      className="rounded-3"
+      className="rounded-3  bg-light"
       id="daily-forecast"
     >
       {Object.keys(dayData).length ? (
         Object.entries(dayData).map((el, index) => {
-          return <DayRow day={el} eventKey={String(index)} key={el[0]} />;
+          return (
+            <DayRow day={el} eventKey={String("daylist" + index)} key={el[0]} />
+          );
         })
       ) : (
         <span>Loading</span>

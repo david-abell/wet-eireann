@@ -1,5 +1,6 @@
-import { Row, Col } from "react-bootstrap";
+import { Row, Col, Container } from "react-bootstrap";
 import WeatherSymbol from "./WeatherSymbol";
+import { DateTime } from "luxon";
 
 function HourBodyData({ hour, hourData }) {
   const temperature = hourData[0].location.temperature.value;
@@ -22,51 +23,56 @@ function HourBodyData({ hour, hourData }) {
   const windDegree = hourData[0].location.windDirection.deg;
   const windSpeed = hourData[0].location.windSpeed.mps;
   return (
-    <Row className="align-items-center hour-row">
-      <Col sm={12} md={4}>
-        <Row className="align-items-center">
-          <Col className="d-flex justify-content-center">
-            <b className="my-0">{hour}</b>
-          </Col>
-          <Col className="d-flex justify-content-center">
-            <b className="my-0">{temperature} &deg;C</b>
-          </Col>
-          <Col className="d-flex justify-content-center">
-            <WeatherSymbol symbolName={symbolName} />
-          </Col>
-        </Row>
-      </Col>
-      <Col sm={12} md={4} className="text-center">
-        <Row className="align-items-center">
-          <Col className="d-flex justify-content-center">
-            <WeatherSymbol symbolName={"Wind"} rotateDegree={windDegree - 90} />
-          </Col>
-          <Col className="d-flex justify-content-center">
-            <b className="my-0">{windDirection}</b>
-          </Col>
-          <Col className="d-flex justify-content-center">
-            <b className="my-0">{Math.round(windSpeed * 3.6) + " km/h"}</b>
-          </Col>
-        </Row>
-      </Col>
-      <Col className="text-center" sm={12} md={4}>
-        <Row className="align-items-center justify-content-center">
-          <Col className="d-flex justify-content-center">
-            <WeatherSymbol symbolName={"Raindrops"} />
-          </Col>
-          <Col className="d-flex justify-content-center">
-            <b className="my-0">{precipAmount + " mm"}</b>
-          </Col>
+    <Container>
+      <Row className="align-items-center hour-row">
+        <Col sm={12} md={4}>
+          <Row className="align-items-center">
+            <Col className="d-flex justify-content-center">
+              <b className="my-0">{hour}</b>
+            </Col>
+            <Col className="d-flex justify-content-center">
+              <b className="my-0">{temperature} &deg;C</b>
+            </Col>
+            <Col className="d-flex justify-content-center">
+              <WeatherSymbol symbolName={symbolName} />
+            </Col>
+          </Row>
+        </Col>
+        <Col sm={12} md={4} className="text-center">
+          <Row className="align-items-center">
+            <Col className="d-flex justify-content-center">
+              <WeatherSymbol
+                symbolName={"Wind"}
+                rotateDegree={windDegree - 90}
+              />
+            </Col>
+            <Col className="d-flex justify-content-center">
+              <b className="my-0">{windDirection}</b>
+            </Col>
+            <Col className="d-flex justify-content-center">
+              <b className="my-0">{Math.round(windSpeed * 3.6) + " km/h"}</b>
+            </Col>
+          </Row>
+        </Col>
+        <Col className="text-center" sm={12} md={4}>
+          <Row className="align-items-center justify-content-center">
+            <Col className="d-flex justify-content-center">
+              <WeatherSymbol symbolName={"Raindrops"} />
+            </Col>
+            <Col className="d-flex justify-content-center">
+              <b className="my-0">{precipAmount + " mm"}</b>
+            </Col>
 
-          <Col className="d-flex justify-content-center">
-            <b className="my-0">
-              {precipChance || precipChance === 0 ? precipChance + "%" : ""}
-            </b>
-          </Col>
-        </Row>
-      </Col>
-      <Col></Col>
-    </Row>
+            <Col className="d-flex justify-content-center">
+              <b className="my-0">
+                {precipChance || precipChance === 0 ? precipChance + "%" : ""}
+              </b>
+            </Col>
+          </Row>
+        </Col>
+        <Col></Col>
+      </Row>
+    </Container>
   );
 }
 
