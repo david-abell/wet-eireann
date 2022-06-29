@@ -1,9 +1,9 @@
-import "./styles/App.css";
+// import "./styles/App.css";
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Stack } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { XMLParser } from "fast-xml-parser";
-import sampleData from "./sampleData.xml";
+import sampleData from "./sampleData2.xml";
 // import TodayCardold from "./components/TodayCardold";
 import RainfallChart from "./components/RainfallChart";
 // import WeatherSymbol from "./components/WeatherSymbol";
@@ -124,7 +124,7 @@ function App() {
     setGraphPeriods(periods);
   }, [weatherData, setGraphPeriods]);
   return (
-    <div className="App">
+    <div className="min-vh-100">
       <TopNav geoLocation={geoLocation} setGeoLocation={setGeoLocation} />
       <Container className=" d-grid gap-5 pt-5">
         {!!Object.keys(dayData).length && (
