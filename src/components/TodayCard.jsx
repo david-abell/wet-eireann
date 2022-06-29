@@ -13,6 +13,9 @@ import SimpleColumnInner from "./SimpleColumnInner";
 function TodayCard({ geoLocation, dayData }) {
   const [todayDate, setTodayDate] = useState(() => Object.keys(dayData)[0]);
   const [todayData, setTodayData] = useState(parseDayData());
+  const [firstHourData, setFirstHourData] = useState(
+    Object.values(dayData)[0][0]
+  );
 
   function parseDayData() {
     return getDayMinMaxAverages(Object.values(dayData)[0]);
@@ -38,6 +41,47 @@ function TodayCard({ geoLocation, dayData }) {
                 )}
               </Col>
             </FlexColumnWrapper>
+            {todayData && (
+              <FlexColumnWrapper>
+                <Col sm={12}>
+                  <Row>
+                    <Col sm={12}>
+                      <p className="h5 mb-0">Currently</p>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col sm={12}>
+                      <p className="display-1">
+                        {Math.round(
+                          firstHourData[0].location.temperature.value
+                        )}
+                        &deg;C
+                      </p>
+                    </Col>
+                  </Row>
+                </Col>
+              </FlexColumnWrapper>
+            )}
+            {todayData && (
+              <FlexColumnWrapper>
+                <Col sm={12}>
+                  <Row>
+                    <Col sm={12}>
+                      <p className="h2">
+                        H - {getMaxRoundedValue(todayData.temperature)}&deg;C
+                      </p>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col sm={12}>
+                      <p className="h4">
+                        L - {getMinRoundedValue(todayData.temperature)}&deg;C
+                      </p>
+                    </Col>
+                  </Row>
+                </Col>
+              </FlexColumnWrapper>
+            )}
             <Col className="d-flex align-items-center justify-content-center">
               {todayData && (
                 <WeatherSymbol
@@ -46,26 +90,6 @@ function TodayCard({ geoLocation, dayData }) {
                 />
               )}
             </Col>
-            {todayData && (
-              <FlexColumnWrapper>
-                <Col sm={12}>
-                  <Row>
-                    <Col sm={12}>
-                      <p className="h1">
-                        {getMaxRoundedValue(todayData.temperature)}&deg;C
-                      </p>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col sm={12}>
-                      <p className="h4">
-                        {getMinRoundedValue(todayData.temperature)}&deg;C
-                      </p>
-                    </Col>
-                  </Row>
-                </Col>
-              </FlexColumnWrapper>
-            )}
             {/* <Col className="d-flex align-items-center justify-content-center">
             <Row className="text-center">
             </Row>
@@ -81,7 +105,7 @@ function TodayCard({ geoLocation, dayData }) {
                   0
                     ? `${getAverageRoundedValue(
                         todayData.precipitation.probability
-                      )} % chance up to ${Math.max(
+                      )} % up to ${Math.max(
                         ...todayData.precipitation.maxvalue
                       )} mm`
                     : "no precipitation expected"}
