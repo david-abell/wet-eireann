@@ -30,10 +30,12 @@ function TodayCard({ geoLocation, dayData }) {
           <Container className="d-flex flex-column flex-md-row align-items-center justify-content-center">
             <FlexColumnWrapper>
               <Col sm={12}>
-                <>
-                  <p className="h1">{geoLocation.name}</p>
-                  <p className="h5">{todayDate}</p>
-                </>
+                {todayData && (
+                  <>
+                    <p className="h1">{geoLocation.name}</p>
+                    <p className="h5">{todayDate}</p>
+                  </>
+                )}
               </Col>
             </FlexColumnWrapper>
             <Col className="d-flex align-items-center justify-content-center">
