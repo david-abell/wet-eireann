@@ -11,62 +11,53 @@ import {
 import FlexColumnWrapper from "./FlexColumnWrapper";
 import SimpleColumnInner from "./SimpleColumnInner";
 function TodayCard({ geoLocation, dayData }) {
-  const [date, setDate] = useState("");
-  const [data, setData] = useState(null);
+  const [todayDate, setTodayDate] = useState(() => Object.keys(dayData)[0]);
+  const [todayData, setTodayData] = useState(parseDayData());
 
+  function parseDayData() {
+    return getDayMinMaxAverages(Object.values(dayData)[0]);
+  }
   useEffect(() => {
-    if (dayData && Object.keys(dayData).length) {
-      console.log(dayData);
-      const testdata = Object.entries(dayData)[0];
-      const result = {};
-      result.pointData = testdata[1][0][0].location;
-      result.rangeData = testdata[1][0][1].location;
-      result.symbolName = result.rangeData.symbol.id;
-      result.date = testdata[0];
-      // console.log(Object.keys(dayData)[0]);
-      // console.log(getDayMinMaxAverages(Object.values(dayData)[5]));
-      const [targetDate, targetData] = Object.entries(dayData)[0];
-      setDate(targetDate);
-      setData(getDayMinMaxAverages(targetData));
-    }
+    const [targetDate, targetData] = Object.entries(dayData)[0];
+    setTodayDate(targetDate);
+    setTodayData(getDayMinMaxAverages(targetData));
   }, [dayData]);
 
   return (
-    <Accordion className="rounded-3 bg-light" flush>
+    <Accordion className="rounded-3 bg-light">
       <Accordion.Item eventKey={"todaycard0"}>
         <Accordion.Header>
           <Container className="d-flex flex-column flex-md-row align-items-center justify-content-center">
             <FlexColumnWrapper>
               <Col sm={12}>
-                {!data ? (
-                  <p>...loading forecast location</p>
-                ) : (
-                  <>
-                    <p className="h1">{geoLocation.name}</p>
-                    <p className="h5">{date}</p>
-                  </>
-                )}
+                <>
+                  <p className="h1">{geoLocation.name}</p>
+                  <p className="h5">{todayDate}</p>
+                </>
               </Col>
             </FlexColumnWrapper>
             <Col className="d-flex align-items-center justify-content-center">
-              {data && (
-                <WeatherSymbol symbolName={data.symbol[0]} size={"12rem"} />
+              {todayData && (
+                <WeatherSymbol
+                  symbolName={todayData.symbol[0]}
+                  size={"12rem"}
+                />
               )}
             </Col>
-            {data && (
+            {todayData && (
               <FlexColumnWrapper>
                 <Col sm={12}>
                   <Row>
                     <Col sm={12}>
                       <p className="h1">
-                        {getMaxRoundedValue(data.temperature)}&deg;C
+                        {getMaxRoundedValue(todayData.temperature)}&deg;C
                       </p>
                     </Col>
                   </Row>
                   <Row>
                     <Col sm={12}>
                       <p className="h4">
-                        {getMinRoundedValue(data.temperature)}&deg;C
+                        {getMinRoundedValue(todayData.temperature)}&deg;C
                       </p>
                     </Col>
                   </Row>
@@ -81,34 +72,35 @@ function TodayCard({ geoLocation, dayData }) {
         </Accordion.Header>
         <Accordion.Body>
           <Container className="d-flex flex-column flex-md-row align-items-center justify-content-center">
-            {data && (
-              <FlexColumnWrapper data={data}>
+            {todayData && (
+              <FlexColumnWrapper data={todayData}>
                 <SimpleColumnInner title={"Precipitation"}>
-                  {getAverageRoundedValue(data.precipitation.probability) > 0
+                  {getAverageRoundedValue(todayData.precipitation.probability) >
+                  0
                     ? `${getAverageRoundedValue(
-                        data.precipitation.probability
+                        todayData.precipitation.probability
                       )} % chance up to ${Math.max(
-                        ...data.precipitation.maxvalue
+                        ...todayData.precipitation.maxvalue
                       )} mm`
                     : "no precipitation expected"}
                 </SimpleColumnInner>
               </FlexColumnWrapper>
             )}
-            {data && (
+            {todayData && (
               <FlexColumnWrapper>
                 <SimpleColumnInner title={"Humidity"}>
-                  {getMinRoundedValue(data.humidity)}
+                  {getMinRoundedValue(todayData.humidity)}
                   {" - "}
-                  {getMaxRoundedValue(data.humidity)}%
+                  {getMaxRoundedValue(todayData.humidity)}%
                 </SimpleColumnInner>
               </FlexColumnWrapper>
             )}
-            {data && (
+            {todayData && (
               <FlexColumnWrapper>
                 <SimpleColumnInner title={"Pressure"}>
-                  {getMinRoundedValue(data.pressure)}
+                  {getMinRoundedValue(todayData.pressure)}
                   {" - "}
-                  {getMaxRoundedValue(data.pressure)}hPa
+                  {getMaxRoundedValue(todayData.pressure)}hPa
                 </SimpleColumnInner>
               </FlexColumnWrapper>
             )}
