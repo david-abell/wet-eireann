@@ -1,7 +1,7 @@
 import HourBodyData from "./HourBodyData";
 import { DateTime } from "luxon";
 
-function HourBody({ hourData, date }) {
+function HourBody({ hourData }) {
   const hour = DateTime.fromISO(hourData[0]?.from).toLocaleString(
     DateTime.TIME_SIMPLE
   );

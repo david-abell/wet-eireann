@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState, useMemo } from "react";
+import React, { useRef, useMemo } from "react";
 import ChartControls from "./ChartControls";
 import "chartjs-adapter-luxon";
 import { DateTime } from "luxon";
@@ -16,9 +16,9 @@ import {
   BarElement,
   Filler,
 } from "chart.js";
-import { Line, Chart } from "react-chartjs-2";
+import { Line } from "react-chartjs-2";
 import zoomPlugin from "chartjs-plugin-zoom";
-import { Container, Row, Col, Stack } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 
 ChartJS.register(
   CategoryScale,

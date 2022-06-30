@@ -1,5 +1,5 @@
 import HourBody from "./HourBody";
-import { Row, Col } from "react-bootstrap";
+import { Col } from "react-bootstrap";
 import { Accordion } from "react-bootstrap";
 
 function DayRow({ day, eventKey }) {
