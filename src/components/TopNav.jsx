@@ -1,4 +1,4 @@
-import { Navbar, Nav, Container, Form, Button } from "react-bootstrap";
+import { Navbar, Nav, Container } from "react-bootstrap";
 import MapSearch from "./MapSearch";
 import "../styles/topNav.css";
 function TopNav({ geoLocation, setGeoLocation }) {

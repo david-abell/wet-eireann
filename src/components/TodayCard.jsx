@@ -1,12 +1,11 @@
-import { Container, Row, Col, Accordion, Collapse } from "react-bootstrap";
-import { useMemo, useCallback, useState, useEffect } from "react";
+import { Container, Row, Col, Accordion } from "react-bootstrap";
+import { useState, useEffect } from "react";
 import WeatherSymbol from "./WeatherSymbol";
 import { getDayMinMaxAverages } from "../utilities/helpers";
 import {
   getMinRoundedValue,
   getMaxRoundedValue,
   getAverageRoundedValue,
-  getFrequentString,
 } from "../utilities/helpers";
 import FlexColumnWrapper from "./FlexColumnWrapper";
 import SimpleColumnInner from "./SimpleColumnInner";
@@ -24,6 +23,7 @@ function TodayCard({ geoLocation, dayData }) {
     const [targetDate, targetData] = Object.entries(dayData)[0];
     setTodayDate(targetDate);
     setTodayData(getDayMinMaxAverages(targetData));
+    setFirstHourData(Object.values(dayData)[0][0]);
   }, [dayData]);
 
   return (

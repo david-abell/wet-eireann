@@ -1,5 +1,5 @@
 import { usePlacesWidget } from "react-google-autocomplete";
-import { Form, Button, Navbar } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 
 function MapSearch({ geoLocation, setGeoLocation }) {
   const { ref: bootstrapRef } = usePlacesWidget({

@@ -1,5 +1,5 @@
-import { ButtonToolbar, Form } from "react-bootstrap";
-import React, { useRef, useState, useEffect } from "react";
+import { ButtonToolbar } from "react-bootstrap";
+import React from "react";
 import ChartButton from "./ChartButton";
 
 function ChartControls({ chartRef }) {

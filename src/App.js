@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Stack } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { XMLParser } from "fast-xml-parser";
-import sampleData from "./sampleData2.xml";
+// import sampleData from "./sampleData2.xml";
 import RainfallChart from "./components/RainfallChart";
 import { DateTime } from "luxon";
 import { chunkArray } from "./utilities/helpers";
@@ -77,7 +77,7 @@ function App() {
       const toTimeStamp = DateTime.fromISO(to);
       const timeDiff = toTimeStamp.diff(timeStamp, ["months", "days", "hours"]);
       const elDay = timeStamp.toFormat("EEEE, MMMM d");
-      const { months, days, hours } = timeDiff.values;
+      const { hours } = timeDiff.values;
       if (dayChunks[elDay]) {
         dayChunks[elDay] = [...dayChunks[elDay], el];
       } else {
@@ -97,7 +97,7 @@ function App() {
       ...dayChunks,
     });
     precipitationData.forEach((el) => {
-      const { from, to } = el;
+      const { from } = el;
       const {
         location: {
           precipitation: { value, minvalue, maxvalue, probability },
