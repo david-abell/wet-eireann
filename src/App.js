@@ -37,8 +37,8 @@ function App() {
         ignoreAttributes: false,
         ignoreNameSpace: false,
       });
-      const url = sampleData;
-      // const url = `http://localhost:8010/proxy/metno-wdb2ts/locationforecast?lat=${geoLocation.lat};long=${geoLocation.long}`;
+      // const url = sampleData;
+      const url = `https://met-eireann-cors.herokuapp.com/http://metwdb-openaccess.ichec.ie/metno-wdb2ts/locationforecast?lat=${geoLocation.lat};long=${geoLocation.long}`;
       try {
         const response = await fetch(url, { mode: "cors" });
         if (!response.ok) {
