@@ -40,9 +40,11 @@ function App() {
       // const url = sampleData;
       const url = `https://met-eireann-cors.herokuapp.com/http://metwdb-openaccess.ichec.ie/metno-wdb2ts/locationforecast?lat=${geoLocation.lat};long=${geoLocation.long}`;
       try {
+        const headers = new Headers();
+        headers.set("X-Requested-With", "XMLHttpRequest");
         const response = await fetch(url, {
           mode: "cors",
-          headers: ["X-Requested-With"],
+          headers: headers,
         });
         if (!response.ok) {
           throw new Error(response.statusText);
