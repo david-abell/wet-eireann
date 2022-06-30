@@ -1,117 +1,136 @@
-import { Container, Row, Col, Accordion } from "react-bootstrap";
-import { useMemo, useCallback, useState } from "react";
+import { Container, Row, Col, Accordion, Collapse } from "react-bootstrap";
+import { useMemo, useCallback, useState, useEffect } from "react";
 import WeatherSymbol from "./WeatherSymbol";
 import { getDayMinMaxAverages } from "../utilities/helpers";
 import {
   getMinRoundedValue,
   getMaxRoundedValue,
   getAverageRoundedValue,
+  getFrequentString,
 } from "../utilities/helpers";
-
+import FlexColumnWrapper from "./FlexColumnWrapper";
+import SimpleColumnInner from "./SimpleColumnInner";
 function TodayCard({ geoLocation, dayData }) {
-  const [date, setDate] = useState("");
-  const [data, setData] = useState(null);
+  const [todayDate, setTodayDate] = useState(() => Object.keys(dayData)[0]);
+  const [todayData, setTodayData] = useState(parseDayData());
+  const [firstHourData, setFirstHourData] = useState(
+    Object.values(dayData)[0][0]
+  );
 
-  const todayData = useMemo(() => {
-    if (dayData && Object.keys(dayData).length) {
-      const data = Object.entries(dayData)[0];
-      const result = {};
-      result.pointData = data[1][0][0].location;
-      result.rangeData = data[1][0][1].location;
-      result.symbolName = result.rangeData.symbol.id;
-      result.date = data[0];
-      console.log(Object.keys(dayData)[0]);
-      console.log(getDayMinMaxAverages(Object.values(dayData)[4]));
-      const [targetDate, targetData] = Object.entries(dayData)[3];
-      setDate(targetDate);
-      setData(getDayMinMaxAverages(targetData));
-      return result;
-    }
-    return null;
+  function parseDayData() {
+    return getDayMinMaxAverages(Object.values(dayData)[0]);
+  }
+  useEffect(() => {
+    const [targetDate, targetData] = Object.entries(dayData)[0];
+    setTodayDate(targetDate);
+    setTodayData(getDayMinMaxAverages(targetData));
   }, [dayData]);
 
   return (
-    <Accordion
-      className="p-5 p-md-0 rounded-3 bg-light"
-      defaultActiveKey={["0"]}
-      alwaysOpen
-    >
-      <Accordion.Item>
-        <Accordion.Header className="d-flex flex-column flex-md-row align-items-center justify-content-center">
-          {
-            <Col className="d-flex align-items-center justify-content-center flex-grow-1">
-              <Row className="text-center">
-                <Col sm={12}>
-                  {!todayData ? (
-                    <p>...loading forecast location</p>
-                  ) : (
-                    <>
-                      <p className="h1">{geoLocation.name}</p>
-                      <p className="h5">{date}</p>
-                    </>
-                  )}
-                </Col>
-              </Row>
-            </Col>
-          }
-          <Col className="d-flex align-items-center justify-content-center p-0">
-            {data && (
-              <WeatherSymbol symbolName={todayData.symbolName} size={"12rem"} />
-            )}
-          </Col>
-          <Col className="d-flex align-items-center justify-content-center">
-            <Row className="text-center">
+    <Accordion className="rounded-3 bg-light">
+      <Accordion.Item eventKey={"todaycard0"}>
+        <Accordion.Header>
+          <Container className="d-flex flex-column flex-md-row align-items-center justify-content-center">
+            <FlexColumnWrapper>
               <Col sm={12}>
-                {data && (
+                {todayData && (
                   <>
-                    <Row>
-                      <Col sm={12}>
-                        <p className="h1">
-                          {getMaxRoundedValue(data.temperature)}&deg;C
-                        </p>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col sm={12}>
-                        <p className="h4">
-                          {getMinRoundedValue(data.temperature)}&deg;C
-                        </p>
-                      </Col>
-                    </Row>
+                    <p className="h1">{geoLocation.name}</p>
+                    <p className="h5">{todayDate}</p>
                   </>
                 )}
               </Col>
+            </FlexColumnWrapper>
+            {todayData && (
+              <FlexColumnWrapper>
+                <Col sm={12}>
+                  <Row>
+                    <Col sm={12}>
+                      <p className="h5 mb-0">Currently</p>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col sm={12}>
+                      <p className="display-1">
+                        {Math.round(
+                          firstHourData[0].location.temperature.value
+                        )}
+                        &deg;C
+                      </p>
+                    </Col>
+                  </Row>
+                </Col>
+              </FlexColumnWrapper>
+            )}
+            {todayData && (
+              <FlexColumnWrapper>
+                <Col sm={12}>
+                  <Row>
+                    <Col sm={12}>
+                      <p className="h2">
+                        H - {getMaxRoundedValue(todayData.temperature)}&deg;C
+                      </p>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col sm={12}>
+                      <p className="h4">
+                        L - {getMinRoundedValue(todayData.temperature)}&deg;C
+                      </p>
+                    </Col>
+                  </Row>
+                </Col>
+              </FlexColumnWrapper>
+            )}
+            <Col className="d-flex align-items-center justify-content-center">
+              {todayData && (
+                <WeatherSymbol
+                  symbolName={todayData.symbol[0]}
+                  size={"12rem"}
+                />
+              )}
+            </Col>
+            {/* <Col className="d-flex align-items-center justify-content-center">
+            <Row className="text-center">
             </Row>
-          </Col>
+          </Col> */}
+          </Container>
         </Accordion.Header>
         <Accordion.Body>
-          <p>This is the body</p>
-          <Col className="d-flex align-items-center justify-content-center">
-            <Row className="text-center">
-              <Col sm={12}>
-                {!!Object.keys(dayData).length && (
-                  <>
-                    <Row>
-                      <Col sm={12}>
-                        <p className="h5">Precipitation</p>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col sm={12}>
-                        <p className="h2">
-                          {getAverageRoundedValue(
-                            data.precipitation.probability
-                          )}
-                          % / {getMaxRoundedValue(data.precipitation.maxvalue)}
-                          mm
-                        </p>
-                      </Col>
-                    </Row>
-                  </>
-                )}
-              </Col>
-            </Row>
-          </Col>
+          <Container className="d-flex flex-column flex-md-row align-items-center justify-content-center">
+            {todayData && (
+              <FlexColumnWrapper data={todayData}>
+                <SimpleColumnInner title={"Precipitation"}>
+                  {getAverageRoundedValue(todayData.precipitation.probability) >
+                  0
+                    ? `${getAverageRoundedValue(
+                        todayData.precipitation.probability
+                      )} % up to ${Math.max(
+                        ...todayData.precipitation.maxvalue
+                      )} mm`
+                    : "no precipitation expected"}
+                </SimpleColumnInner>
+              </FlexColumnWrapper>
+            )}
+            {todayData && (
+              <FlexColumnWrapper>
+                <SimpleColumnInner title={"Humidity"}>
+                  {getMinRoundedValue(todayData.humidity)}
+                  {" - "}
+                  {getMaxRoundedValue(todayData.humidity)}%
+                </SimpleColumnInner>
+              </FlexColumnWrapper>
+            )}
+            {todayData && (
+              <FlexColumnWrapper>
+                <SimpleColumnInner title={"Pressure"}>
+                  {getMinRoundedValue(todayData.pressure)}
+                  {" - "}
+                  {getMaxRoundedValue(todayData.pressure)}hPa
+                </SimpleColumnInner>
+              </FlexColumnWrapper>
+            )}
+          </Container>
         </Accordion.Body>
       </Accordion.Item>
     </Accordion>

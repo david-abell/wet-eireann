@@ -1,5 +1,6 @@
 .chart-container {
-  /* position: relative; */
-  min-height: 400px;
-  /* width: 800px; */
+  position: relative;
+  height: 50vh;
+  width: 80vw;
+  /* overflow: hidden; */
 }

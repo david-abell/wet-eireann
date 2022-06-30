@@ -16,6 +16,7 @@
 - chartjs-plugin-zoom
 - Inkscape for SVG creation
 - SVGR CLI for SVG web prep and React component conversion
+- Google places API
 
 ## Lessons learned/ problems encountered
 

@@ -79,10 +79,17 @@ export function getDayMinMaxAverages(arr) {
             result[key].push(Number(val.value));
             break;
           case "precipitation":
-            result[key].value.push(Number(val.value));
-            result[key].minvalue.push(Number(val.value));
-            result[key].maxvalue.push(Number(val.value));
-            result[key].probability.push(Number(val.value));
+            if (result[key].minvalue) {
+              const newValue = Number(
+                (Number(val.minvalue) + Number(val.maxvalue) / 2).toFixed(2)
+              );
+              result[key].value.push(newValue);
+              result[key].minvalue.push(Number(val.minvalue));
+              result[key].maxvalue.push(Number(val.maxvalue));
+            } else {
+              result[key].value.push(Number(val.value));
+            }
+            result[key].probability.push(Number(val.probability));
             break;
           case "symbol":
             result[key].push(val.id);
@@ -107,11 +114,22 @@ export function getMaxRoundedValue(arr) {
 
 export function getAverageRoundedValue(arr) {
   return Math.round(
-    (arr.reduce((acc, val) => {
+    arr.reduce((acc, val) => {
       acc += val;
       return acc;
-    }, 0) /
-      arr.length) *
-      100
+    }, 0) / arr.length
   );
+}
+
+export function getFrequentString(arr) {
+  console.log(arr);
+  let stringMap = arr.reduce((acc, el) => {
+    if (acc[el]) {
+      acc[el]++;
+    } else {
+      acc[el] = 1;
+    }
+    return acc;
+  }, {});
+  console.log(stringMap);
 }

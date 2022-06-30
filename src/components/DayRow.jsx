@@ -9,10 +9,12 @@ function DayRow({ day, eventKey }) {
       <Accordion.Header>
         <Col>{date}</Col>
       </Accordion.Header>
-      {data &&
-        data.map((el, index) => {
-          return <HourBody hourData={el} date={date} key={date + index} />;
-        })}
+      <Accordion.Body>
+        {data &&
+          data.map((el, index) => {
+            return <HourBody hourData={el} date={date} key={date + index} />;
+          })}
+      </Accordion.Body>
     </Accordion.Item>
   );
 }

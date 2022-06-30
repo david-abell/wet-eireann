@@ -7,11 +7,7 @@ function ChartButton({ name, handler, chartRef }) {
     handler(chartRef?.current);
   };
 
-  return (
-    <Button onClick={(e) => handleClick(e, handler)} className="mx-1">
-      {name}
-    </Button>
-  );
+  return <Button onClick={(e) => handleClick(e, handler)}>{name}</Button>;
 }
 
 export default ChartButton;

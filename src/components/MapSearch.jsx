@@ -1,5 +1,5 @@
 import { usePlacesWidget } from "react-google-autocomplete";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Navbar } from "react-bootstrap";
 
 function MapSearch({ geoLocation, setGeoLocation }) {
   const { ref: bootstrapRef } = usePlacesWidget({
@@ -24,13 +24,12 @@ function MapSearch({ geoLocation, setGeoLocation }) {
     },
   });
   return (
-    <Form className="ms-auto d-flex flex-grow-1">
-      <Form.Group controlId="locationSearch" className="me-4 ms-auto d-flex">
-        <Form.Label>Choose a location</Form.Label>
+    <Form className="m-auto d-lg-inline flex-grow-1 flex-lg-grow-0 flex-shrink-0">
+      <Form.Group controlId="locationSearch" className="me-md-4 ms-auto d-flex">
+        <Form.Label className="visually-hidden">Choose a location</Form.Label>
         <Form.Control
           type="search"
           ref={bootstrapRef}
-          className="me-2"
           placeholder={geoLocation.name}
         />
       </Form.Group>

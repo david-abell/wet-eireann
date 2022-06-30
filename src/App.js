@@ -1,13 +1,9 @@
-import "./styles/App.css";
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Stack } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { XMLParser } from "fast-xml-parser";
 import sampleData from "./sampleData2.xml";
-// import TodayCardold from "./components/TodayCardold";
 import RainfallChart from "./components/RainfallChart";
-// import WeatherSymbol from "./components/WeatherSymbol";
-// import forecastSymbols from "./utilities/getForecastSymbolPosition";
 import { DateTime } from "luxon";
 import { chunkArray } from "./utilities/helpers";
 import DayList from "./components/DayList";
@@ -28,7 +24,6 @@ function App() {
     pointData: [],
   });
   const [graphPeriods, setGraphPeriods] = useState([]);
-  // const [precipitation, setPrecipitation] = useState([]);
   const [precipChance, setPrecipChance] = useState([]);
   const [precipAmount, setPrecipAmount] = useState([]);
   const [dayData, setDayData] = useState({});
@@ -39,13 +34,11 @@ function App() {
       if (isApiSubscribed) return;
       const parser = new XMLParser({
         attributeNamePrefix: "",
-        //attrNodeName: false,
-        //textNodeName : "#text",
         ignoreAttributes: false,
         ignoreNameSpace: false,
       });
-      const url = sampleData;
-      // const url = `http://localhost:8010/proxy/metno-wdb2ts/locationforecast?lat=${geoLocation.lat};long=${geoLocation.long}`;
+      // const url = sampleData;
+      const url = `https://met-eireann-cors.herokuapp.com/http://metwdb-openaccess.ichec.ie/metno-wdb2ts/locationforecast?lat=${geoLocation.lat};long=${geoLocation.long}`;
       try {
         const response = await fetch(url, { mode: "cors" });
         if (!response.ok) {
@@ -124,51 +117,21 @@ function App() {
     setGraphPeriods(periods);
   }, [weatherData, setGraphPeriods]);
   return (
-    <>
+    <div className="min-vh-100">
       <TopNav geoLocation={geoLocation} setGeoLocation={setGeoLocation} />
-      <Container className="App py-5 d-grid gap-5">
-        <TodayCard geoLocation={geoLocation} dayData={dayData}></TodayCard>
-        <DayList dayData={dayData} className="mb-5" />
-        {/* <RainfallChart
+      <Container className=" d-grid gap-5 pt-5">
+        {!!Object.keys(dayData).length && (
+          <TodayCard geoLocation={geoLocation} dayData={dayData}></TodayCard>
+        )}
+        <DayList dayData={dayData} />
+        <RainfallChart
           precipChance={precipChance}
           graphPeriods={graphPeriods}
           precipAmount={precipAmount}
-        /> */}
-
-        {/* {weatherData.pointData.length && (
-        <>
-          <TodayCard pointData={weatherData.pointData[1].location} />
-        </>
-      )} */}
-        {/* {Object.entries(forecastSymbols).map(([key, value]) => {
-        return (
-          <WeatherSymbol key={key} spriteName={key} spritePosition={value} />
-        );
-      })} */}
+        />
       </Container>
-    </>
+    </div>
   );
-  // return (
-  //   <div className="App">
-  //     <ul>
-  //       {weatherData.pointData.map((el, index) => {
-  //         const { location, from, to } = el;
-  //         const { temperature, precipitation } = location;
-  //         const pointTime = new Date(from).toLocaleDateString("en-gb");
-  //         return (
-  //           <React.Fragment key={from + index + "I"}>
-  //             <li key={from + index + "A"}>Date: {pointTime}</li>
-  //             <li key={to + index + "B"}>
-  //               {temperature
-  //                 ? "Temperature: " + temperature.value
-  //                 : "Precipitation: " + precipitation?.maxvalue}
-  //             </li>
-  //           </React.Fragment>
-  //         );
-  //       })}
-  //     </ul>
-  //   </div>
-  // );
 }
 
 export default App;

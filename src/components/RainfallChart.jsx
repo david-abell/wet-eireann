@@ -55,25 +55,26 @@ function RainfallChart({ precipChance, graphPeriods, precipAmount }) {
           min: 0,
           max: 100,
           grid: {
-            borderDash: [3, 3],
+            borderColor: "#4BC0C0",
           },
           ticks: {
             callback: function (context) {
               return context + "%";
             },
+            color: "#212529",
           },
         },
         "y-axis-amount": {
-          // title: {
-          //   display: true,
-          //   text: "Precipitation amount",
-          // },
           min: 0,
           max: 20,
+          grid: {
+            borderColor: "#4BC0C0",
+          },
           ticks: {
             callback: function (context) {
               return context + "mm";
             },
+            color: "#212529",
           },
         },
         x: {
@@ -81,7 +82,7 @@ function RainfallChart({ precipChance, graphPeriods, precipAmount }) {
             date: { locale: "IE" },
           },
           grid: {
-            borderDash: [3, 3],
+            borderColor: "#4BC0C0",
           },
           type: "time",
           distribution: "linear",
@@ -92,7 +93,8 @@ function RainfallChart({ precipChance, graphPeriods, precipAmount }) {
             },
           },
           ticks: {
-            source: "data",
+            // source: "data",
+            color: "#212529",
           },
           min: graphPeriods.at(0), // utc date string without timezone, example: "2022-06-08T20:00:00Z"
           max: DateTime.fromISO(graphPeriods.at(0))
@@ -103,6 +105,12 @@ function RainfallChart({ precipChance, graphPeriods, precipAmount }) {
       plugins: {
         legend: {
           position: "top",
+          labels: {
+            padding: 0,
+            font: {
+              size: 19,
+            },
+          },
         },
         title: {
           display: false,
@@ -175,7 +183,7 @@ function RainfallChart({ precipChance, graphPeriods, precipAmount }) {
     backgroundColor: "rgb(255, 99, 132)",
   };
   return (
-    <Container className="p-5 rounded-3 bg-light" id="weather-graph">
+    <Container className="py-4 rounded-3 bg-light mb-5" id="weather-graph">
       <Row>
         <Col className="chart-container">
           <Line
@@ -186,7 +194,7 @@ function RainfallChart({ precipChance, graphPeriods, precipAmount }) {
           />
         </Col>
       </Row>
-      <Row className="pt-5 ">
+      <Row className="pt-2 ">
         <Col>{chartRef.current && <ChartControls chartRef={chartRef} />}</Col>
       </Row>
     </Container>
