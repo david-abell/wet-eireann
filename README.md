@@ -1,12 +1,15 @@
-# A React.js Weather App for the Met Éireann weather api
+# A React.js Weather App for Met Éireann weather data
 
-## Why I built it this way
+See it live at [https://wet-eireann.netlify.app/](https://wet-eireann.netlify.app/)
 
--
+Please note that places lookup is restricted to the region covered by Met Éireann forecast data.
 
 ## Technology used
 
 - Met Éireann XML weather API
+- Met Éireann XML warning RSS API
+- cors-anywhere proxy server hosted on heroku as Met Éireann apis do not provide cors headers
+- hosted on heroku
 - Create React App
 - react-bootstrap
 - fast-xml-parser
@@ -17,6 +20,7 @@
 - Inkscape for SVG creation
 - SVGR CLI for SVG web prep and React component conversion
 - Google places API
+-
 
 ## Lessons learned/ problems encountered
 

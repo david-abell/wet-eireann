@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-16"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <atom:link rel="self" type="application/rss+xml" href="https://www.met.ie/warnings" />
+    <title>Met Éireann Warnings</title>
+    <link>https://www.met.ie/warnings</link>
+    <description>Warnings issued by Met Éireann. This RSS feed displays valid warnings for land areas only. Sea area warnings will be added at a later date. Clicking the links, loads the CAP (Common Alerting Protocol) XML file.
+Note: Moderate means ‘Status Yellow’, Severe means ‘Status Orange’ and extreme means ‘Status Red’</description>
+    <copyright>Public Domain</copyright>
+    <language>en</language>
+    <item>
+      <title>Small Craft warning from Valentia to Slyne Head to Bloody Foreland</title>
+      <link>https://cap.met.ie//2.49.0.1.372.0.220630162607.N_Norm021_SmallCraft.xml</link>
+      <description>South to southwest winds will reach force 6. </description>
+      <author>forecasts@met.ie (Met Éireann)</author>
+      <category>Marine</category>
+      <guid>https://cap.met.ie//2.49.0.1.372.0.220630162607.N_Norm021_SmallCraft.xml</guid>
+      <pubDate>Thu, 30 Jun 2022 11:07:36 GMT</pubDate>
+    </item>
+    <item>
+      <title>Small Craft warning from Belfast Lough to Wicklow Head to Roches Point</title>
+      <link>https://cap.met.ie//2.49.0.1.372.0.220630162607.N_Norm023_SmallCraft.xml</link>
+      <description>South to southwest winds will increase to force 6 at times on Friday afternoon. </description>
+      <author>forecasts@met.ie (Met Éireann)</author>
+      <category>Marine</category>
+      <guid>https://cap.met.ie//2.49.0.1.372.0.220630162607.N_Norm023_SmallCraft.xml</guid>
+      <pubDate>Thu, 30 Jun 2022 16:26:07 GMT</pubDate>
+    </item>
+    <item>
+      <title>Small Craft warning from Valentia to Loop Head to Erris Head</title>
+      <link>https://cap.met.ie//2.49.0.1.372.0.220630162607.N_Norm022_SmallCraft.xml</link>
+      <description>Northwest winds will increase to force 6 on Saturday.</description>
+      <author>forecasts@met.ie (Met Éireann)</author>
+      <category>Marine</category>
+      <guid>https://cap.met.ie//2.49.0.1.372.0.220630162607.N_Norm022_SmallCraft.xml</guid>
+      <pubDate>Thu, 30 Jun 2022 16:26:07 GMT</pubDate>
+    </item>
+    <atom:link href="https://www.met.ie/warningsxml/rss.xml" rel="self" 
+       type="application/rss+xml" />
+  </channel>
+</rss>
