@@ -23,8 +23,13 @@ function WeatherWarning({ warning, setVisibleChildren }) {
 
   if (show) {
     return (
-      <Container className="px-0">
-        <Alert variant={dangerVariant} onClose={onClose} dismissible>
+      <Container className="p-0">
+        <Alert
+          variant={dangerVariant}
+          onClose={onClose}
+          dismissible
+          className="mb-0"
+        >
           <Alert.Heading>{headline}</Alert.Heading>
           <p>{description}</p>
           <p>

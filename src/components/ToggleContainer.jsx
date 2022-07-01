@@ -7,7 +7,14 @@ function ToggleContainer({ children }) {
 
   if (visibleChildren) {
     return (
-      <Container className="pb-2">
+      <Container className="pb-4 d-flex flex-column gap-4">
+        <Button
+          onClick={() => setVisibleChildren(0)}
+          className="flex-grow-1 btn-warning"
+        >
+          Hide all Warnings
+        </Button>
+
         {children.map((child) => {
           const clonedChild = cloneElement(child, {
             setVisibleChildren: setVisibleChildren,
