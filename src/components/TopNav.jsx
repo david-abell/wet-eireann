@@ -3,7 +3,7 @@ import MapSearch from "./MapSearch";
 import "../styles/topNav.css";
 function TopNav({ geoLocation, setGeoLocation }) {
   return (
-    <Navbar expand="md" bg="light">
+    <Navbar expand="md" bg="light" className="mb-4">
       <Container className="d-flex justify-content-between gap-2">
         <Navbar.Brand href="#home" className="ms-md-4 flex-basis-50">
           Wet-Eireann
