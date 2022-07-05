@@ -17,6 +17,7 @@
     "react-chartjs-2": "^4.1.0",
     "react-dom": "^18.1.0",
     "react-google-autocomplete": "^2.7.0",
+    "react-query": "^3.39.1",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },
