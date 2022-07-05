@@ -71,7 +71,6 @@ function RainfallChart({ coordinates }) {
       precipAmounts.push(mean);
       periods.push(from);
     });
-    console.log(precipitationData);
     setPrecipAmount(precipAmounts);
     setPrecipChance(precipChances);
     setGraphPeriods(periods);
