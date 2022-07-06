@@ -42,17 +42,20 @@ function RainfallChart({ coordinates }) {
   const [precipChance, setPrecipChance] = useState([]);
   const [precipAmount, setPrecipAmount] = useState([]);
   const [temperatures, setTemperatures] = useState([]);
-  const { forecast, isForecastLoading } = useForecast(coordinates);
+  const forecast = useForecast(coordinates);
 
   // set chart data arrays from forecast
   useEffect(() => {
-    if (isForecastLoading) return;
+    console.log("rainfall useeffect");
+    if (forecast.error || forecast.isLoading) {
+      // console.log(forecast.error);
+      return;
+    }
     let precipChances = [];
     let periods = [];
     let precipAmounts = [];
     let temperatureValues = [];
-    if (!forecast) return;
-    let chunkedData = chunkArray(forecast, 2);
+    let chunkedData = chunkArray(forecast.data, 2);
     const precipitationData = chunkedData.map((el) => {
       return el[1];
     });
@@ -87,7 +90,7 @@ function RainfallChart({ coordinates }) {
       temperatureValues.push(parseFloat(value));
     });
     setTemperatures(temperatureValues);
-  }, [forecast, isForecastLoading]);
+  }, [forecast.isLoading, forecast.error, forecast.data]);
 
   const options = useMemo(
     () => ({
