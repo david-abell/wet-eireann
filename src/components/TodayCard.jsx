@@ -16,36 +16,11 @@ function TodayCard({ geoLocation, dayData }) {
   const [firstHourData, setFirstHourData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
 
-  // {
-  //   temperature: [],
-  //   windDirection: [],
-  //   windSpeed: [],
-  //   windGust: [],
-  //   globalRadiation: [],
-  //   humidity: [],
-  //   pressure: [],
-  //   cloudiness: [],
-  //   lowClouds: [],
-  //   mediumClouds: [],
-  //   highClouds: [],
-  //   dewpointTemperature: [],
-  //   precipitation: {
-  //     value: [],
-  //     minvalue: [],
-  //     maxvalue: [],
-  //     probability: [],
-  //   },
-  //   symbol: [],
-  // }
-  // function parseDayData() {
-  //   return getDayMinMaxAverages(Object.values(dayData)[0]);
-  // }
-
   useEffect(() => {
     if (!Object.keys(dayData).length) return;
     const [, targetData] = Object.entries(dayData)[0];
     const targetDate = DateTime.fromISO(targetData[0][0].from).toFormat(
-      "EEE MMMM d', 'HH':00'"
+      "EEE MMMM d', 'h a"
     );
     setTodayDate(targetDate);
     setTodayData(getDayMinMaxAverages(targetData));
@@ -58,8 +33,8 @@ function TodayCard({ geoLocation, dayData }) {
       return (
         <Col sm={12}>
           <Placeholder animation="glow">
-            <Placeholder className="w-75 d-block mb-4 h1 mx-auto" />
-            <Placeholder className="w-50 d-block h5  mx-auto" />
+            <Placeholder className="w-75 d-block h1 mx-auto" />
+            <Placeholder className="w-50 d-block h5 mx-auto" />
           </Placeholder>
         </Col>
       );
@@ -76,7 +51,7 @@ function TodayCard({ geoLocation, dayData }) {
     <Accordion className="rounded-3 bg-light">
       <Accordion.Item eventKey={"todaycard0"}>
         <Accordion.Header>
-          <Container className="d-flex flex-column flex-md-row align-items-center justify-content-center">
+          <Container className="d-flex flex-column flex-md-row align-items-center justify-content-center w-100 gap-2">
             <FlexColumnWrapper>
               <LocationColumn />
             </FlexColumnWrapper>
