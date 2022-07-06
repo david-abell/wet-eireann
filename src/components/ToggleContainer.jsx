@@ -17,7 +17,7 @@ function ToggleContainer({ children }) {
 
         {children.map((child) => {
           const clonedChild = cloneElement(child, {
-            setVisibleChildren: setVisibleChildren,
+            setVisibleChildren,
           });
           return clonedChild;
         })}
@@ -30,7 +30,8 @@ function ToggleContainer({ children }) {
         onClick={() => setVisibleChildren(children.length)}
         className="flex-grow-1 btn-warning"
       >
-        Show Weather Warnings
+        {children.length ? "Show " + children.length : "No"} active weather
+        warnings
       </Button>
     </Container>
   );
