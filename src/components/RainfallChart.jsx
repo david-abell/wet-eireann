@@ -1,4 +1,4 @@
-import React, { useRef, useMemo } from "react";
+import React, { useRef, useMemo, useState, useEffect } from "react";
 import ChartControls from "./ChartControls";
 import "chartjs-adapter-luxon";
 import { DateTime } from "luxon";
@@ -19,6 +19,8 @@ import {
 import { Line } from "react-chartjs-2";
 import zoomPlugin from "chartjs-plugin-zoom";
 import { Container, Row, Col } from "react-bootstrap";
+import useForecast from "../hooks/useForecast";
+import { chunkArray } from "../utilities/helpers";
 
 ChartJS.register(
   CategoryScale,
@@ -34,8 +36,60 @@ ChartJS.register(
   zoomPlugin
 );
 
-function RainfallChart({ precipChance, graphPeriods, precipAmount }) {
+function RainfallChart({ coordinates }) {
   const chartRef = useRef(null);
+  const [graphPeriods, setGraphPeriods] = useState([]);
+  const [precipChance, setPrecipChance] = useState([]);
+  const [precipAmount, setPrecipAmount] = useState([]);
+  const [temperatures, setTemperatures] = useState([]);
+  const forecast = useForecast(coordinates);
+
+  // set chart data arrays from forecast
+  useEffect(() => {
+    if (forecast.error || forecast.isLoading) {
+      // console.log(forecast.error);
+      return;
+    }
+    let precipChances = [];
+    let periods = [];
+    let precipAmounts = [];
+    let temperatureValues = [];
+    let chunkedData = chunkArray(forecast.data, 2);
+    const precipitationData = chunkedData.map((el) => {
+      return el[1];
+    });
+    precipitationData.forEach((el) => {
+      const { from } = el;
+      const {
+        location: {
+          precipitation: { value, minvalue, maxvalue, probability },
+        },
+      } = el;
+      const mean =
+        minvalue && maxvalue
+          ? (parseFloat(minvalue) + parseFloat(maxvalue)) / 2
+          : value;
+      precipChances.push(probability);
+      precipAmounts.push(mean);
+      periods.push(from);
+    });
+    setPrecipAmount(precipAmounts);
+    setPrecipChance(precipChances);
+    setGraphPeriods(periods);
+
+    const pointData = chunkedData.map((el) => {
+      return el[0];
+    });
+    pointData.forEach((el) => {
+      const {
+        location: {
+          temperature: { value },
+        },
+      } = el;
+      temperatureValues.push(parseFloat(value));
+    });
+    setTemperatures(temperatureValues);
+  }, [forecast.isLoading, forecast.error, forecast.data]);
 
   const options = useMemo(
     () => ({
@@ -60,6 +114,23 @@ function RainfallChart({ precipChance, graphPeriods, precipAmount }) {
           ticks: {
             callback: function (context) {
               return context + "%";
+            },
+            color: "#212529",
+          },
+        },
+        "y-axis-temperature": {
+          // title: {
+          //   display: true,
+          //   text: "Precipitation chance",
+          // },
+          min: 0,
+          max: 50,
+          grid: {
+            borderColor: "#4BC0C0",
+          },
+          ticks: {
+            callback: function (context) {
+              return context + "°C";
             },
             color: "#212529",
           },
@@ -106,23 +177,33 @@ function RainfallChart({ precipChance, graphPeriods, precipAmount }) {
         legend: {
           position: "top",
           labels: {
-            padding: 0,
+            padding: 4,
             font: {
               size: 19,
             },
           },
         },
-        title: {
-          display: false,
-          text: "Precipitation outlook",
-        },
+        // title: {
+        //   display: false,
+        //   text: "Precipitation outlook",
+        // },
         tooltip: {
           callbacks: {
             label: function (context) {
               let label = context.dataset.label || "";
               let value = context.formattedValue || "";
-              const suffix = context.datasetIndex === 0 ? " %" : "mm";
-              return label + ": " + value + suffix;
+              // const suffix = context.datasetIndex === 0 ? " %" : "mm";
+              const suffix = () => {
+                switch (label) {
+                  case "Precipitation chance":
+                    return " %";
+                  case "Precipitation amount":
+                    return " mm";
+                  default:
+                    return "°C";
+                }
+              };
+              return label + ": " + value + suffix();
             },
           },
         },
@@ -159,11 +240,22 @@ function RainfallChart({ precipChance, graphPeriods, precipAmount }) {
       {
         type: "line",
         fill: false,
+        label: "Temperature",
+        yAxisID: "y-axis-temperature",
+        data: temperatures,
+        backgroundColor: "rgb(255, 99, 132)",
+        borderColor: "rgb(255, 99, 132)",
+        lineTension: 0.2,
+        pointRadius: 0,
+      },
+      {
+        type: "line",
+        fill: false,
         label: "Precipitation chance",
         yAxisID: "y-axis-chance",
         data: precipChance,
-        borderColor: "rgb(255, 99, 132)",
-        backgroundColor: "rgb(255, 99, 132)",
+        borderColor: "rgb(11, 94, 215)",
+        backgroundColor: "rgb(11, 94, 215)",
         lineTension: 0.2,
         pointRadius: 0,
       },
@@ -172,11 +264,11 @@ function RainfallChart({ precipChance, graphPeriods, precipAmount }) {
         fill: true,
         label: "Precipitation amount",
         yAxisID: "y-axis-amount",
-        backgroundColor: "rgb(75, 192, 192)",
         data: precipAmount,
-        pointRadius: 0,
+        backgroundColor: "rgb(75, 192, 192)",
         borderColor: "white",
         lineTension: 0.2,
+        pointRadius: 0,
       },
     ],
     borderColor: "rgb(255, 99, 132)",

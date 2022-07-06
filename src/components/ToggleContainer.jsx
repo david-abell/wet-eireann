@@ -1,9 +1,11 @@
-import { Container, Button } from "react-bootstrap";
+import { Container, Button, Placeholder } from "react-bootstrap";
 import { useState } from "react";
 import { cloneElement } from "react";
+import useWarnings from "../hooks/useWarnings";
 
 function ToggleContainer({ children }) {
   const [visibleChildren, setVisibleChildren] = useState(children.length);
+  const { isLoading } = useWarnings();
 
   if (visibleChildren) {
     return (
@@ -17,7 +19,7 @@ function ToggleContainer({ children }) {
 
         {children.map((child) => {
           const clonedChild = cloneElement(child, {
-            setVisibleChildren: setVisibleChildren,
+            setVisibleChildren,
           });
           return clonedChild;
         })}
@@ -26,12 +28,22 @@ function ToggleContainer({ children }) {
   }
   return (
     <Container className="pb-4 px-0 d-flex">
-      <Button
-        onClick={() => setVisibleChildren(children.length)}
-        className="flex-grow-1 btn-warning"
-      >
-        Show Weather Warnings
-      </Button>
+      {isLoading ? (
+        <Placeholder.Button
+          className="btn-warning w-100 flex-grow-1"
+          variant=""
+        >
+          Loading warnings...
+        </Placeholder.Button>
+      ) : (
+        <Button
+          onClick={() => setVisibleChildren(children.length)}
+          className="flex-grow-1 btn-warning"
+        >
+          {children.length ? "Show " + children.length : "No"} active weather
+          warnings
+        </Button>
+      )}
     </Container>
   );
 }
