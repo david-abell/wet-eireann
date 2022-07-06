@@ -38,7 +38,6 @@ function App() {
   return (
     <div className="min-vh-100">
       <TopNav geoLocation={geoLocation} setGeoLocation={setGeoLocation} />
-
       <ToggleContainer className="pb-2">
         {warnings.data.map((warning) => {
           return <WeatherWarning warning={warning} key={warning.headline} />;
