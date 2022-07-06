@@ -10,7 +10,7 @@ import TodayCard from "./components/TodayCard";
 import WeatherWarning from "./components/WeatherWarning";
 import ToggleContainer from "./components/ToggleContainer";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { ReactQueryDevtools } from "react-query/devtools";
+// import { ReactQueryDevtools } from "react-query/devtools";
 import useWarnings from "./hooks/useWarnings";
 import useForecast from "./hooks/useForecast";
 
