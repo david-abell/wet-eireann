@@ -16,6 +16,7 @@ function useWarnings() {
     const response = await fetch(rssUrl, {
       mode: "cors",
       headers: headers,
+      redirect: "error",
     });
     if (!response.ok) {
       throw new Error(response.statusText);
