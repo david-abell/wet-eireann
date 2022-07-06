@@ -9,6 +9,7 @@ import {
 } from "../utilities/helpers";
 import FlexColumnWrapper from "./FlexColumnWrapper";
 import SimpleColumnInner from "./SimpleColumnInner";
+import { DateTime } from "luxon";
 function TodayCard({ geoLocation, dayData }) {
   const [todayDate, setTodayDate] = useState("");
   const [todayData, setTodayData] = useState({});
@@ -42,7 +43,10 @@ function TodayCard({ geoLocation, dayData }) {
 
   useEffect(() => {
     if (!Object.keys(dayData).length) return;
-    const [targetDate, targetData] = Object.entries(dayData)[0];
+    const [, targetData] = Object.entries(dayData)[0];
+    const targetDate = DateTime.fromISO(targetData[0][0].from).toFormat(
+      "EEE MMMM d', 'HH':00'"
+    );
     setTodayDate(targetDate);
     setTodayData(getDayMinMaxAverages(targetData));
     setFirstHourData(Object.values(dayData)[0][0]);
