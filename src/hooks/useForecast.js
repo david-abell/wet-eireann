@@ -20,7 +20,6 @@ function useForecast({ lat, long }) {
       // credentials: true, // for testing only
       redirect: "error",
     });
-    console.log(response);
     if (!response.ok) {
       throw new Error(response.statusText);
     }

@@ -46,7 +46,6 @@ function RainfallChart({ coordinates }) {
 
   // set chart data arrays from forecast
   useEffect(() => {
-    console.log("rainfall useeffect");
     if (forecast.error || forecast.isLoading) {
       // console.log(forecast.error);
       return;
