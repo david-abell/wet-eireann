@@ -1,11 +1,4 @@
-import {
-  Container,
-  Row,
-  Col,
-  Accordion,
-  Placeholder,
-  Card,
-} from "react-bootstrap";
+import { Container, Row, Col, Accordion, Placeholder } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import WeatherSymbol from "./WeatherSymbol";
 import { getDayMinMaxAverages } from "../utilities/helpers";
