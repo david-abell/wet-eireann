@@ -12,35 +12,36 @@ function useForecast({ lat, long }) {
     headers.set("content-type", "text/xml");
     headers.set("X-Requested-With", "XMLHttpRequest");
 
-    try {
-      const url = `${process.env.REACT_APP_CORS_PROXY}http://metwdb-openaccess.ichec.ie/metno-wdb2ts/locationforecast?lat=${lat};long=${long}`;
-      const response = await fetch(url, {
-        mode: "cors",
-        headers: headers,
-      });
-      if (!response.ok) {
-        throw new Error(response.statusText);
-      }
-      const result = await response.text();
-      const data = parser.parse(result).weatherdata;
-      const created = data.created;
-      const pointData = data.product.time;
-      return pointData;
-    } catch (error) {
-      console.log(error);
+    // const url = `http:1.0.0.1`;
+    const url = `${process.env.REACT_APP_CORS_PROXY}http://metwdb-openaccess.ichec.ie/metno-wdb2ts/locationforecast?lat=${lat};long=${long}`;
+    const response = await fetch(url, {
+      mode: "cors",
+      headers: headers,
+      // credentials: true, // for testing only
+      redirect: "error",
+    });
+    console.log(response);
+    if (!response.ok) {
+      throw new Error(response.statusText);
     }
+    const result = await response.text();
+    const data = parser.parse(result).weatherdata;
+    // const created = data.created;
+    const pointData = data.product.time;
+    return pointData;
   };
 
-  const { isLoading, error, data, isFetching } = useQuery(
+  const { isLoading, error, data, isFetching, isSuccess } = useQuery(
     "forecast",
     fetchForecast
   );
 
   return {
-    forecast: data ?? [],
-    isForecastLoading: isLoading,
+    data: data ?? [],
+    isLoading,
     error,
     isFetching,
+    isSuccess,
   };
 }
 
