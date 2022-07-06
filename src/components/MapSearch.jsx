@@ -18,8 +18,9 @@ function MapSearch({ geoLocation, setGeoLocation }) {
       const name = place.formatted_address;
       const lat = place.geometry.location.lat();
       const long = place.geometry.location.lng();
-      setGeoLocation((loc) => {
-        return { ...loc, name, lat, long };
+      const coordinates = { lat, long };
+      setGeoLocation((prev) => {
+        return { ...prev, name, coordinates };
       });
     },
   });
