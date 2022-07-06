@@ -1,3 +1,4 @@
+import { DateTime } from "luxon";
 export function removeEmptyValues(obj) {
   return Object.fromEntries(
     Object.entries(obj).filter(([_, value]) => value != null)
@@ -7,13 +8,32 @@ export function checkValues(obj) {
   return Object.entries(obj).every(([_, value]) => !!value !== false);
 }
 
-export function chunkArray(array = [], chunkSize) {
-  return array.length
-    ? [
-        array.slice(0, chunkSize),
-        ...chunkArray(array.slice(chunkSize), chunkSize),
-      ]
+export function chunkArray(arr = [], chunkSize = 2) {
+  return arr.length
+    ? [arr.slice(0, chunkSize), ...chunkArray(arr.slice(chunkSize), chunkSize)]
     : [];
+}
+
+function groupChunksByDay(chunkedData) {
+  let dayChunks = {};
+  chunkedData.forEach((el) => {
+    const { from } = el[1];
+    const timeStamp = DateTime.fromISO(from);
+    const elDay = timeStamp.toFormat("EEEE, MMMM d");
+    if (dayChunks[elDay]) {
+      dayChunks[elDay] = [...dayChunks[elDay], el];
+    } else {
+      dayChunks[elDay] = [el];
+    }
+  });
+  return dayChunks;
+}
+
+export function groupDataByDay(arr = []) {
+  if (!arr.length) return {};
+  const chunkedData = chunkArray(arr);
+  const groupedChunks = groupChunksByDay(chunkedData);
+  return groupedChunks;
 }
 
 export function getDayMinMaxAverages(arr) {

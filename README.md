@@ -2,7 +2,9 @@
 
 See it live at [https://wet-eireann.netlify.app/](https://wet-eireann.netlify.app/)
 
-Please note that places lookup is restricted to the region covered by Met Éireann forecast data.
+Please be patient with load times. The free proxy server takes appr. 8 seconds to spool up.
+
+Places lookup is restricted to the region covered by Met Éireann forecast data.
 
 ## Technology used
 
@@ -20,7 +22,7 @@ Please note that places lookup is restricted to the region covered by Met Éirea
 - Inkscape for SVG creation
 - SVGR CLI for SVG web prep and React component conversion
 - Google places API
--
+- React query for data fetch management
 
 ## Lessons learned/ problems encountered
 
