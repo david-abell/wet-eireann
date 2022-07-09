@@ -32,7 +32,8 @@ function useForecast({ lat, long }) {
 
   const { isLoading, error, data, isFetching, isSuccess } = useQuery(
     "forecast",
-    fetchForecast
+    fetchForecast,
+    { staleTime: 120000 }
   );
 
   return {
