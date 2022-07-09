@@ -46,7 +46,8 @@ function useWarnings() {
 
   const { isLoading, error, data, isFetching } = useQuery(
     "warnings",
-    fetchWarnings
+    fetchWarnings,
+    { staleTime: 120000 }
   );
 
   return {
