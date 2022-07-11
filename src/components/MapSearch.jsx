@@ -1,7 +1,9 @@
 import { usePlacesWidget } from "react-google-autocomplete";
 import { Form } from "react-bootstrap";
+import { useQueryClient } from "react-query";
 
 function MapSearch({ geoLocation, setGeoLocation }) {
+  const queryClient = useQueryClient();
   const { ref: bootstrapRef } = usePlacesWidget({
     apiKey: process.env.REACT_APP_MAPS_API,
     options: {
@@ -22,6 +24,7 @@ function MapSearch({ geoLocation, setGeoLocation }) {
       setGeoLocation((prev) => {
         return { ...prev, name, coordinates };
       });
+      queryClient.invalidateQueries(["forecast"]);
     },
   });
   return (
