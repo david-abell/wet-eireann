@@ -1,7 +1,6 @@
 import { Container, Row, Col, Accordion, Placeholder } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import WeatherSymbol from "./WeatherSymbol";
-import { getDayMinMaxAverages } from "../utilities/helpers";
 import {
   getMinRoundedValue,
   getMaxRoundedValue,
@@ -10,26 +9,28 @@ import {
 import FlexColumnWrapper from "./FlexColumnWrapper";
 import SimpleColumnInner from "./SimpleColumnInner";
 import { DateTime } from "luxon";
-function TodayCard({ geoLocation, dayData }) {
+import useGroupedForecast from "../hooks/useGroupedForecast";
+
+function TodayCard({ geoLocation }) {
   const [todayDate, setTodayDate] = useState("");
-  const [todayData, setTodayData] = useState({});
-  const [firstHourData, setFirstHourData] = useState({});
-  const [isLoading, setIsLoading] = useState(true);
+  const {
+    data: { todayData, firstHourData, dayData },
+    isFetching,
+    isLoading,
+    isIdle,
+  } = useGroupedForecast(geoLocation["coordinates"]);
 
   useEffect(() => {
-    if (!Object.keys(dayData).length) return;
+    if (isFetching || isLoading || isIdle) return;
     const [, targetData] = Object.entries(dayData)[0];
     const targetDate = DateTime.fromISO(targetData[0][0].from).toFormat(
       "EEE MMMM d', 'h a"
     );
     setTodayDate(targetDate);
-    setTodayData(getDayMinMaxAverages(targetData));
-    setFirstHourData(Object.values(dayData)[0][0]);
-    setIsLoading(false);
-  }, [dayData, setIsLoading]);
+  }, [dayData, isLoading, isFetching, isIdle, setTodayDate]);
 
   const LocationColumn = () => {
-    if (isLoading) {
+    if (isIdle || isLoading || isFetching) {
       return (
         <Col sm={12}>
           <Placeholder animation="glow">
@@ -46,7 +47,6 @@ function TodayCard({ geoLocation, dayData }) {
       </Col>
     );
   };
-
   return (
     <Accordion className="rounded-3 bg-light">
       <Accordion.Item eventKey={"todaycard0"}>
@@ -65,7 +65,7 @@ function TodayCard({ geoLocation, dayData }) {
                 </Row>
                 <Row>
                   <Col sm={12}>
-                    {isLoading ? (
+                    {isIdle || isLoading || isFetching ? (
                       <Placeholder animation="glow">
                         <Placeholder className="display-1 w-25  mt-1" />
                       </Placeholder>
@@ -86,28 +86,30 @@ function TodayCard({ geoLocation, dayData }) {
               <Col sm={12}>
                 <Row>
                   <Col sm={12}>
-                    {isLoading ? (
+                    {isIdle || isLoading || (isFetching && todayData) ? (
                       <Placeholder animation="glow">
                         <span className="h2">High </span>
                         <Placeholder className="display-1 w-25  mt-1" />
                       </Placeholder>
                     ) : (
                       <p className="h2">
-                        High {getMaxRoundedValue(todayData.temperature)}&deg;C
+                        High {getMaxRoundedValue(todayData.temperature)}
+                        &deg;C
                       </p>
                     )}
                   </Col>
                 </Row>
                 <Row>
                   <Col sm={12}>
-                    {isLoading ? (
+                    {isIdle || isLoading || isFetching ? (
                       <Placeholder animation="glow">
                         <span className="h4">Low </span>
                         <Placeholder className="display-1 w-25  mt-1" />
                       </Placeholder>
                     ) : (
                       <p className="h4">
-                        Low {getMinRoundedValue(todayData.temperature)}&deg;C
+                        Low {getMinRoundedValue(todayData.temperature)}
+                        &deg;C
                       </p>
                     )}{" "}
                   </Col>
@@ -115,7 +117,7 @@ function TodayCard({ geoLocation, dayData }) {
               </Col>
             </FlexColumnWrapper>
             <Col className="d-flex align-items-center justify-content-center">
-              {isLoading ? (
+              {isIdle || isLoading || isFetching ? (
                 <Placeholder animation="glow">
                   <Placeholder style={{ height: "12rem", width: "12rem" }} />
                 </Placeholder>
@@ -128,13 +130,9 @@ function TodayCard({ geoLocation, dayData }) {
                 />
               )}
             </Col>
-            {/* <Col className="d-flex align-items-center justify-content-center">
-            <Row className="text-center">
-            </Row>
-          </Col> */}
           </Container>
         </Accordion.Header>
-        {!isLoading && (
+        {!isLoading && !isFetching && !isIdle && (
           <Accordion.Body>
             <Container className="d-flex flex-column flex-md-row align-items-center justify-content-center">
               {Object.keys(todayData).length && (

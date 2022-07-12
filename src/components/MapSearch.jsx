@@ -24,9 +24,10 @@ function MapSearch({ geoLocation, setGeoLocation }) {
       setGeoLocation((prev) => {
         return { ...prev, name, coordinates };
       });
-      queryClient.invalidateQueries(["forecast"]);
+      return queryClient.invalidateQueries(["forecast", "groupedForecast"]);
     },
   });
+
   return (
     <Form className="m-auto d-lg-inline flex-grow-1 flex-lg-grow-0 flex-shrink-0">
       <Form.Group controlId="locationSearch" className="me-md-4 ms-auto d-flex">
