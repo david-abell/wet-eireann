@@ -1,5 +1,6 @@
 import DayRow from "./DayRow";
 import { Accordion, Placeholder } from "react-bootstrap";
+import useGroupedForecast from "../hooks/useGroupedForecast";
 
 const AccordionPlaceholder = () => {
   return (
@@ -13,10 +14,18 @@ const AccordionPlaceholder = () => {
     </Placeholder>
   );
 };
-function DayList({ dayData }) {
+
+function DayList({ geoLocation }) {
+  const {
+    data: { dayData },
+    isFetching,
+    isLoading,
+    isIdle,
+  } = useGroupedForecast(geoLocation["coordinates"]);
+
   return (
     <Accordion alwaysOpen className="rounded-3  bg-light" id="daily-forecast">
-      {!Object.keys(dayData).length
+      {isIdle || isLoading || isFetching
         ? Array(10)
             .fill()
             .map((_, index) => {

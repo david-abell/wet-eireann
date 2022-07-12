@@ -1,7 +1,7 @@
 import { useQuery } from "react-query";
 import { XMLParser } from "fast-xml-parser";
 
-function useForecast({ lat, long }) {
+function useForecast({ lat, long, options = null }) {
   const fetchForecast = async () => {
     const parser = new XMLParser({
       attributeNamePrefix: "",
@@ -12,7 +12,6 @@ function useForecast({ lat, long }) {
     headers.set("content-type", "text/xml");
     headers.set("X-Requested-With", "XMLHttpRequest");
 
-    // const url = `http:1.0.0.1`;
     const url = `${process.env.REACT_APP_CORS_PROXY}http://metwdb-openaccess.ichec.ie/metno-wdb2ts/locationforecast?lat=${lat};long=${long}`;
     const response = await fetch(url, {
       mode: "cors",
@@ -25,15 +24,14 @@ function useForecast({ lat, long }) {
     }
     const result = await response.text();
     const data = parser.parse(result).weatherdata;
-    // const created = data.created;
     const pointData = data.product.time;
     return pointData;
   };
 
   const { isLoading, error, data, isFetching, isSuccess } = useQuery(
-    "forecast",
+    ["forecast", lat, long],
     fetchForecast,
-    { staleTime: 120000 }
+    { ...options, staleTime: 120000 }
   );
 
   return {

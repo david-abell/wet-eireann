@@ -22,24 +22,35 @@ function useWarnings() {
       throw new Error(response.statusText);
     }
     const result = await response.text();
-    const alerts = parser.parse(result)?.rss?.channel?.item;
-    const links = alerts.map((el) => el.link);
-    const warnings = await Promise.all(
-      links.map(async (url) => {
-        const linkResponse = await fetch(
-          `${process.env.REACT_APP_CORS_PROXY}${url}`,
-          {
-            mode: "cors",
-            headers: headers,
+    const alerts = parser.parse(result)?.rss?.channel?.item || [];
+    let links = [];
+    if (Array.isArray(alerts) && alerts.length) {
+      links = alerts.map((el) => {
+        return el.link;
+      });
+    }
+    if (alerts?.link) {
+      links.push(alerts.link);
+    }
+    let warnings;
+    if (links.length) {
+      warnings = await Promise.all(
+        links.map(async (url) => {
+          const linkResponse = await fetch(
+            `${process.env.REACT_APP_CORS_PROXY}${url}`,
+            {
+              mode: "cors",
+              headers: headers,
+            }
+          );
+          if (!linkResponse.ok) {
+            throw new Error(response.statusText);
           }
-        );
-        if (!linkResponse.ok) {
-          throw new Error(response.statusText);
-        }
-        const linkResult = await linkResponse.text();
-        return parser.parse(linkResult).alert.info;
-      })
-    );
+          const linkResult = await linkResponse.text();
+          return parser.parse(linkResult).alert.info;
+        })
+      );
+    }
 
     return warnings;
   };

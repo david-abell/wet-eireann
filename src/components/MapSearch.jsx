@@ -1,7 +1,9 @@
 import { usePlacesWidget } from "react-google-autocomplete";
 import { Form } from "react-bootstrap";
+import { useQueryClient } from "react-query";
 
 function MapSearch({ geoLocation, setGeoLocation }) {
+  const queryClient = useQueryClient();
   const { ref: bootstrapRef } = usePlacesWidget({
     apiKey: process.env.REACT_APP_MAPS_API,
     options: {
@@ -22,8 +24,10 @@ function MapSearch({ geoLocation, setGeoLocation }) {
       setGeoLocation((prev) => {
         return { ...prev, name, coordinates };
       });
+      return queryClient.invalidateQueries(["forecast", "groupedForecast"]);
     },
   });
+
   return (
     <Form className="m-auto d-lg-inline flex-grow-1 flex-lg-grow-0 flex-shrink-0">
       <Form.Group controlId="locationSearch" className="me-md-4 ms-auto d-flex">
