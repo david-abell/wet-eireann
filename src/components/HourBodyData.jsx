@@ -24,7 +24,7 @@ function HourBodyData({ hour, hourData }) {
   const windSpeed = hourData[0].location.windSpeed.mps;
   return (
     <Container>
-      <Row className="align-items-center hour-row">
+      <Row className="align-items-center hour-row py-2 border-bottom">
         <Col sm={12} md={4}>
           <Row className="align-items-center">
             <Col className="d-flex justify-content-center">
