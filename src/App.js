@@ -9,7 +9,7 @@ import TodayCard from "./components/TodayCard";
 import WeatherWarning from "./components/WeatherWarning";
 import ToggleContainer from "./components/ToggleContainer";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { ReactQueryDevtools } from "react-query/devtools";
+// import { ReactQueryDevtools } from "react-query/devtools";
 import useWarnings from "./hooks/useWarnings";
 
 const queryClient = new QueryClient();
@@ -42,7 +42,7 @@ export default function QueryApp() {
   return (
     <QueryClientProvider client={queryClient}>
       <App />
-      <ReactQueryDevtools initialIsOpen />
+      {/* <ReactQueryDevtools initialIsOpen /> */}
     </QueryClientProvider>
   );
 }
