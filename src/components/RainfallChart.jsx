@@ -118,6 +118,19 @@ function RainfallChart({ coordinates }) {
             color: "#212529",
           },
         },
+        "y-axis-amount": {
+          min: 0,
+          max: 20,
+          grid: {
+            borderColor: "#4BC0C0",
+          },
+          ticks: {
+            callback: function (context) {
+              return context + "mm";
+            },
+            color: "#212529",
+          },
+        },
         "y-axis-temperature": {
           // title: {
           //   display: true,
@@ -131,19 +144,6 @@ function RainfallChart({ coordinates }) {
           ticks: {
             callback: function (context) {
               return context + "°C";
-            },
-            color: "#212529",
-          },
-        },
-        "y-axis-amount": {
-          min: 0,
-          max: 20,
-          grid: {
-            borderColor: "#4BC0C0",
-          },
-          ticks: {
-            callback: function (context) {
-              return context + "mm";
             },
             color: "#212529",
           },
