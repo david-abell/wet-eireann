@@ -1,6 +1,7 @@
 import { usePlacesWidget } from "react-google-autocomplete";
 import { Form } from "react-bootstrap";
 import { useQueryClient } from "react-query";
+import GetLocation from "./GetLocation";
 
 function MapSearch({ geoLocation, setGeoLocation }) {
   const queryClient = useQueryClient();
@@ -30,13 +31,17 @@ function MapSearch({ geoLocation, setGeoLocation }) {
 
   return (
     <Form className="m-auto d-lg-inline flex-grow-1 flex-lg-grow-0 flex-shrink-0">
-      <Form.Group controlId="locationSearch" className="me-md-4 ms-auto d-flex">
+      <Form.Group
+        controlId="locationSearch"
+        className="me-md-4 ms-auto d-flex gap-4"
+      >
         <Form.Label className="visually-hidden">Choose a location</Form.Label>
         <Form.Control
           type="search"
           ref={bootstrapRef}
           placeholder={geoLocation.name}
         />
+        <GetLocation setGeoLocation={setGeoLocation} />
       </Form.Group>
       {/* <Button type="submit">Search</Button> */}
     </Form>
