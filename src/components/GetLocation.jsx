@@ -14,7 +14,7 @@ function GetLocation({ setGeoLocation }) {
     return queryClient.invalidateQueries(["forecast", "groupedForecast"]);
   };
 
-  return <Button onClick={handleClick}>Use your location</Button>;
+  return <Button onClick={handleClick}>Use current location</Button>;
 }
 
 export default GetLocation;
