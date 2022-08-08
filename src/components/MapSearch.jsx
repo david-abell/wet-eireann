@@ -41,7 +41,10 @@ function MapSearch({ geoLocation, setGeoLocation }) {
           ref={bootstrapRef}
           placeholder={geoLocation.name}
         />
-        <GetLocation setGeoLocation={setGeoLocation} />
+        <GetLocation
+          setGeoLocation={setGeoLocation}
+          geoLocation={geoLocation}
+        />
       </Form.Group>
       {/* <Button type="submit">Search</Button> */}
     </Form>

@@ -18,6 +18,12 @@ function App() {
   const [geoLocation, setGeoLocation] = useState({
     name: "Cork, Ireland",
     coordinates: { lat: 51.8985, long: -8.4756 },
+    bounds: {
+      north: 60,
+      south: 49.1,
+      west: 20.9,
+      east: 2.7,
+    },
   });
   const warnings = useWarnings();
 

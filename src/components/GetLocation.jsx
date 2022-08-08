@@ -1,16 +1,30 @@
 import { Button } from "react-bootstrap";
 import getGPSCoordinates from "../utilities/getGPSCoordinates";
 import { useQueryClient } from "react-query";
+import useLocationName from "../hooks/useLocationName";
+import { useEffect } from "react";
 
-function GetLocation({ setGeoLocation }) {
+function GetLocation({ geoLocation, setGeoLocation }) {
   const queryClient = useQueryClient();
+  const { data, refetch } = useLocationName(geoLocation.coordinates);
+
+  useEffect(() => {
+    if (data.length) {
+      setGeoLocation((prev) => ({ ...prev, name: data }));
+      console.log("locationName useEffect", data);
+    }
+  }, [data, setGeoLocation]);
 
   const handleClick = async () => {
     const coordinates = await getGPSCoordinates();
-    const name = "Your Location";
+    console.log(coordinates);
+
     setGeoLocation((prev) => {
-      return { ...prev, name, coordinates };
+      return { ...prev, coordinates };
     });
+
+    refetch();
+
     return queryClient.invalidateQueries(["forecast", "groupedForecast"]);
   };
 
