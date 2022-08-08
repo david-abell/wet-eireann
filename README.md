@@ -23,6 +23,7 @@ Places lookup is restricted to the region covered by Met Éireann forecast data.
 - SVGR CLI for SVG web prep and React component conversion
 - Google places API
 - React query for data fetch management
+- Insomnia for troubleshooting Google Maps url queries
 
 ## Lessons learned/ problems encountered
 
