@@ -1,10 +1,13 @@
 import { usePlacesWidget } from "react-google-autocomplete";
-import { Form } from "react-bootstrap";
+import { Form, Button } from "react-bootstrap";
 import { useQueryClient } from "react-query";
-import GetLocationButton from "./GetLocationButton";
+import useGlobalState from "../hooks/useGlobalState";
+import useMutatePlaceName from "../hooks/useMutatePlaceName";
 
-function MapSearch({ geoLocation, setGeoLocation }) {
+function MapSearch() {
   const queryClient = useQueryClient();
+  const [geoLocation, setGeoLocation] = useGlobalState("geoLocation");
+  const { mutatePlaceName } = useMutatePlaceName(geoLocation.coordinates);
   const { ref: bootstrapRef } = usePlacesWidget({
     apiKey: process.env.REACT_APP_MAPS_API,
     options: {
@@ -29,8 +32,17 @@ function MapSearch({ geoLocation, setGeoLocation }) {
     },
   });
 
+  const handleSubmit = (ev) => {
+    ev.preventDefault();
+    mutatePlaceName();
+    ev.target.reset();
+  };
+
   return (
-    <Form className="m-auto d-lg-inline flex-grow-1 flex-lg-grow-0 flex-shrink-0">
+    <Form
+      className="m-auto d-lg-inline flex-grow-1 flex-lg-grow-0 flex-shrink-0"
+      onSubmit={handleSubmit}
+    >
       <Form.Group
         controlId="locationSearch"
         className="me-md-4 ms-auto d-flex gap-4"
@@ -39,14 +51,10 @@ function MapSearch({ geoLocation, setGeoLocation }) {
         <Form.Control
           type="search"
           ref={bootstrapRef}
-          placeholder={geoLocation.name}
+          placeholder={geoLocation?.name ?? ""}
         />
-        <GetLocationButton
-          setGeoLocation={setGeoLocation}
-          geoLocation={geoLocation}
-        />
+        <Button type="submit">Use current location</Button>
       </Form.Group>
-      {/* <Button type="submit">Search</Button> */}
     </Form>
   );
 }

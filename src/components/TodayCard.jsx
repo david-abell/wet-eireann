@@ -10,8 +10,10 @@ import FlexColumnWrapper from "./FlexColumnWrapper";
 import SimpleColumnInner from "./SimpleColumnInner";
 import { DateTime } from "luxon";
 import useGroupedForecast from "../hooks/useGroupedForecast";
+import useGlobalState from "../hooks/useGlobalState";
 
-function TodayCard({ geoLocation }) {
+function TodayCard() {
+  const [geoLocation] = useGlobalState("geoLocation");
   const [todayDate, setTodayDate] = useState("");
   const {
     data: { todayData, firstHourData, dayData },

@@ -1,22 +1,17 @@
-import { useQuery, useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import geocode from "react-geocode";
 import getGPSCoordinates from "../utilities/getGPSCoordinates";
 import useGlobalState from "./useGlobalState";
+import { removeEircode } from "../utilities/helpers";
 
 const REACT_APP_MAPS_API = process.env.REACT_APP_MAPS_API;
 geocode.setApiKey(REACT_APP_MAPS_API);
 geocode.setRegion("IE");
 geocode.setLocationType("GEOMETRIC_CENTER");
 
-const removeEircode = (str) => {
-  return str
-    .split(" ")
-    .filter((el) => !el.includes("+"))
-    .join(" ");
-};
-
-function useLocationName({ options = { enabled: false } }) {
-  const [geoLocation, setGeoLocation] = useGlobalState("geoLocation");
+function useMutatePlaceName() {
+  const queryClient = useQueryClient();
+  const [, setGeoLocation] = useGlobalState("geoLocation");
 
   const getPlaceName = async () => {
     const coordinates = await getGPSCoordinates();
@@ -30,30 +25,22 @@ function useLocationName({ options = { enabled: false } }) {
     const address = response.results[0].formatted_address;
     const cleanedAddress = removeEircode(address);
 
-    console.log("response", response, address);
-    setGeoLocation((prev) => ({
+    return setGeoLocation((prev) => ({
       ...prev,
       coordinates,
-      locationName: cleanedAddress,
+      name: cleanedAddress,
     }));
-
-    return;
   };
 
-  const { isLoading, error, data, isFetching, isSuccess, refetch } = useQuery(
-    ["locationName", geoLocation.coordinates.lat, geoLocation.coordinates.long],
-    getPlaceName,
-    { ...options, staleTime: 120000 }
-  );
+  const { mutate } = useMutation(getPlaceName, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(["forecast", "groupedForecast"]);
+    },
+  });
 
   return {
-    data: data ?? [],
-    isLoading,
-    error,
-    isFetching,
-    isSuccess,
-    refetch,
+    mutatePlaceName: mutate,
   };
 }
 
-export default useLocationName;
+export default useMutatePlaceName;
