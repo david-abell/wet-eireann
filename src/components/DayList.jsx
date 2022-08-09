@@ -1,6 +1,7 @@
 import DayRow from "./DayRow";
 import { Accordion, Placeholder } from "react-bootstrap";
 import useGroupedForecast from "../hooks/useGroupedForecast";
+import useGlobalState from "../hooks/useGlobalState";
 
 const AccordionPlaceholder = () => {
   return (
@@ -15,7 +16,8 @@ const AccordionPlaceholder = () => {
   );
 };
 
-function DayList({ geoLocation }) {
+function DayList() {
+  const [geoLocation] = useGlobalState("geoLocation");
   const {
     data: { dayData },
     isFetching,

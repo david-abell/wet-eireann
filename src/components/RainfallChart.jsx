@@ -21,6 +21,7 @@ import zoomPlugin from "chartjs-plugin-zoom";
 import { Container, Row, Col } from "react-bootstrap";
 import useForecast from "../hooks/useForecast";
 import { chunkArray } from "../utilities/helpers";
+import useGlobalState from "../hooks/useGlobalState";
 
 ChartJS.register(
   CategoryScale,
@@ -36,12 +37,14 @@ ChartJS.register(
   zoomPlugin
 );
 
-function RainfallChart({ coordinates }) {
+function RainfallChart() {
   const chartRef = useRef(null);
   const [graphPeriods, setGraphPeriods] = useState([]);
   const [precipChance, setPrecipChance] = useState([]);
   const [precipAmount, setPrecipAmount] = useState([]);
   const [temperatures, setTemperatures] = useState([]);
+  const [geoLocation] = useGlobalState("geoLocation");
+  const { coordinates } = geoLocation;
   const forecast = useForecast(coordinates);
 
   // set chart data arrays from forecast
