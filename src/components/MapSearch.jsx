@@ -1,7 +1,7 @@
 import { usePlacesWidget } from "react-google-autocomplete";
 import { Form } from "react-bootstrap";
 import { useQueryClient } from "react-query";
-import GetLocation from "./GetLocation";
+import GetLocationButton from "./GetLocationButton";
 
 function MapSearch({ geoLocation, setGeoLocation }) {
   const queryClient = useQueryClient();
@@ -41,7 +41,7 @@ function MapSearch({ geoLocation, setGeoLocation }) {
           ref={bootstrapRef}
           placeholder={geoLocation.name}
         />
-        <GetLocation
+        <GetLocationButton
           setGeoLocation={setGeoLocation}
           geoLocation={geoLocation}
         />

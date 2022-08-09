@@ -4,7 +4,7 @@ import { useQueryClient } from "react-query";
 import useLocationName from "../hooks/useLocationName";
 import { useEffect } from "react";
 
-function GetLocation({ geoLocation, setGeoLocation }) {
+function GetLocationButton({ geoLocation, setGeoLocation }) {
   const queryClient = useQueryClient();
   const { data, refetch } = useLocationName(geoLocation.coordinates);
 
@@ -31,4 +31,4 @@ function GetLocation({ geoLocation, setGeoLocation }) {
   return <Button onClick={handleClick}>Use current location</Button>;
 }
 
-export default GetLocation;
+export default GetLocationButton;

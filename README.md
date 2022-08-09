@@ -6,6 +6,11 @@ Please be patient with load times. The Heroku free proxy server can take a while
 
 Places lookup is restricted to the region covered by Met Éireann forecast data.
 
+## Project goals
+
+- Build a full feature weather app that I could use as a personal weather app.
+- Explore react state management techniqes.
+
 ## Technology used
 
 - Met Éireann XML weather API
