@@ -153,3 +153,10 @@ export function getFrequentString(arr) {
   }, {});
   console.log(stringMap);
 }
+
+export function removeEircode(str) {
+  return str
+    .split(" ")
+    .filter((el) => !el.includes("+"))
+    .join(" ");
+}
