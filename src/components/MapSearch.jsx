@@ -11,12 +11,7 @@ function MapSearch() {
   const { ref: bootstrapRef } = usePlacesWidget({
     apiKey: process.env.REACT_APP_MAPS_API,
     options: {
-      bounds: {
-        north: 60,
-        south: 49.1,
-        west: 20.9,
-        east: 2.7,
-      },
+      bounds: geoLocation.bounds,
       strictBounds: true,
       types: ["geocode"],
     },

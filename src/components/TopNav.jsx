@@ -1,7 +1,7 @@
 import { Navbar, Nav, Container } from "react-bootstrap";
 import MapSearch from "./MapSearch";
 import "../styles/topNav.css";
-function TopNav({ geoLocation, setGeoLocation }) {
+function TopNav() {
   return (
     <Navbar expand="md" bg="light" className="mb-4">
       <Container className="d-flex justify-content-between gap-2">
@@ -9,12 +9,7 @@ function TopNav({ geoLocation, setGeoLocation }) {
           Wet-Eireann
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="navbar-nav" />
-        {geoLocation && (
-          <MapSearch
-            geoLocation={geoLocation}
-            setGeoLocation={setGeoLocation}
-          />
-        )}
+        <MapSearch />
         <Navbar.Collapse
           id="navbar-nav"
           className="m-auto ms-md-auto flex-shrink-0"
@@ -25,15 +20,6 @@ function TopNav({ geoLocation, setGeoLocation }) {
             <Nav.Link href="#weather-graph">Weather Graph</Nav.Link>
           </Nav>
         </Navbar.Collapse>
-        {/* <Form className="ms-auto d-flex flex-grow-1">
-          <Form.Group
-            controlId="locationSearch"
-            className="me-4 ms-auto d-flex"
-          >
-            <Form.Control type="search" className="me-2"></Form.Control>
-            <Button type="submit">Search</Button>
-          </Form.Group>
-        </Form> */}
       </Container>
     </Navbar>
   );
