@@ -3,9 +3,11 @@ import getGPSCoordinates from "../utilities/getGPSCoordinates";
 import { useQueryClient } from "react-query";
 import useLocationName from "../hooks/useLocationName";
 import { useEffect } from "react";
+import useGlobalState from "../hooks/useGlobalState";
 
-function GetLocationButton({ geoLocation, setGeoLocation }) {
+function GetLocationButton() {
   const queryClient = useQueryClient();
+  const [geoLocation, setGeoLocation] = useGlobalState("geoLocation");
   const { data, refetch } = useLocationName(geoLocation.coordinates);
 
   useEffect(() => {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Container } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 // import sampleData from "./sampleData2.xml";
@@ -8,14 +8,14 @@ import TopNav from "./components/TopNav";
 import TodayCard from "./components/TodayCard";
 import WeatherWarning from "./components/WeatherWarning";
 import ToggleContainer from "./components/ToggleContainer";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import useWarnings from "./hooks/useWarnings";
-
-const queryClient = new QueryClient();
+import { queryClient } from "./constants/queryClient";
+import useGlobalState from "./hooks/useGlobalState";
 
 function App() {
-  const [geoLocation, setGeoLocation] = useState({
+  const [geoLocation, setGeoLocation] = useGlobalState("geoLocation", {
     name: "Cork, Ireland",
     coordinates: { lat: 51.8985, long: -8.4756 },
     bounds: {

@@ -1,4 +1,4 @@
-const getGPSCoordinates = async () => {
+async function getGPSCoordinates() {
   return new Promise((resolve, reject) => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -12,6 +12,6 @@ const getGPSCoordinates = async () => {
       }
     );
   });
-};
+}
 
 export default getGPSCoordinates;
