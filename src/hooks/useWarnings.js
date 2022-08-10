@@ -3,6 +3,7 @@ import { XMLParser } from "fast-xml-parser";
 
 function useWarnings() {
   const fetchWarnings = async () => {
+    const RSS_API_URL = "https://www.met.ie/warningsxml/rss.xml";
     const parser = new XMLParser({
       attributeNamePrefix: "",
       ignoreAttributes: false,
@@ -12,7 +13,7 @@ function useWarnings() {
     headers.set("content-type", "text/xml");
     headers.set("X-Requested-With", "XMLHttpRequest");
 
-    const rssUrl = `${process.env.REACT_APP_CORS_PROXY}https://www.met.ie/warningsxml/rss.xml`;
+    const rssUrl = `${process.env.REACT_APP_CORS_PROXY}${RSS_API_URL}`;
     const response = await fetch(rssUrl, {
       mode: "cors",
       headers: headers,
