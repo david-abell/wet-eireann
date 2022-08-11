@@ -1,7 +1,7 @@
 import { Container, Button, Placeholder } from "react-bootstrap";
 import { useState } from "react";
 import { cloneElement } from "react";
-import useWarnings from "../hooks/useWarnings";
+import useWarnings from "../../hooks/useWarnings";
 
 function ToggleContainer({ children }) {
   const [visibleChildren, setVisibleChildren] = useState(children.length);

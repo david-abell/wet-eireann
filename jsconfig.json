@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "module": "es2020",
+    "baseUrl": "src",
+    "target": "es6"
+  },
+  "include": ["./src/**/*"]
+}

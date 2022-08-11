@@ -1,8 +1,8 @@
 import { usePlacesWidget } from "react-google-autocomplete";
 import { Form, Button } from "react-bootstrap";
 import { useQueryClient } from "react-query";
-import useGlobalState from "../hooks/useGlobalState";
-import useMutatePlaceName from "../hooks/useMutatePlaceName";
+import useGlobalState from "../../hooks/useGlobalState";
+import useMutatePlaceName from "../../hooks/useMutatePlaceName";
 
 function MapSearch() {
   const queryClient = useQueryClient();

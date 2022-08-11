@@ -1,16 +1,16 @@
 import { Container, Row, Col, Accordion, Placeholder } from "react-bootstrap";
 import { useState, useEffect } from "react";
-import WeatherSymbol from "./WeatherSymbol";
+import WeatherSymbol from "../WeatherSymbol";
 import {
   getMinRoundedValue,
   getMaxRoundedValue,
   getAverageRoundedValue,
-} from "../utilities/helpers";
+} from "../../utilities/helpers";
 import FlexColumnWrapper from "./FlexColumnWrapper";
 import SimpleColumnInner from "./SimpleColumnInner";
 import { DateTime } from "luxon";
-import useGroupedForecast from "../hooks/useGroupedForecast";
-import useGlobalState from "../hooks/useGlobalState";
+import useGroupedForecast from "../../hooks/useGroupedForecast";
+import useGlobalState from "../../hooks/useGlobalState";
 
 function TodayCard() {
   const [geoLocation] = useGlobalState("geoLocation");
