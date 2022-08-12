@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "react-query";
 import geocode from "react-geocode";
 import getGPSCoordinates from "../utilities/getGPSCoordinates";
 import useGlobalState from "./useGlobalState";
-import { removeEircode } from "../utilities/helpers";
+import { removeEircode, isWithinBounds } from "../utilities/helpers";
 
 const REACT_APP_MAPS_API = process.env.REACT_APP_MAPS_API;
 geocode.setApiKey(REACT_APP_MAPS_API);
@@ -21,6 +21,9 @@ function useMutatePlaceName() {
       throw new Error("Invalid coordinates");
     }
 
+    if (!isWithinBounds(lat, long)) {
+      throw new Error("Location outside supported map area");
+    }
     const response = await geocode.fromLatLng(String(lat), String(long));
     const address = response.results[0].formatted_address;
     const cleanedAddress = removeEircode(address);
@@ -32,7 +35,7 @@ function useMutatePlaceName() {
     }));
   };
 
-  const { mutate } = useMutation(getPlaceName, {
+  const { mutate, isError, error } = useMutation(getPlaceName, {
     onSuccess: () => {
       queryClient.invalidateQueries(["forecast", "groupedForecast"]);
     },
@@ -40,6 +43,8 @@ function useMutatePlaceName() {
 
   return {
     mutatePlaceName: mutate,
+    isError,
+    error,
   };
 }
 
