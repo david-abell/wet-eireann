@@ -2,7 +2,7 @@ import React, { useRef, useMemo, useState, useEffect } from "react";
 import ChartControls from "./ChartControls";
 import "chartjs-adapter-luxon";
 import { DateTime } from "luxon";
-import "../styles/RainfallChart.css";
+import "./RainfallChart.css";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -19,9 +19,9 @@ import {
 import { Line } from "react-chartjs-2";
 import zoomPlugin from "chartjs-plugin-zoom";
 import { Container, Row, Col } from "react-bootstrap";
-import useForecast from "../hooks/useForecast";
-import { chunkArray } from "../utilities/helpers";
-import useGlobalState from "../hooks/useGlobalState";
+import useForecast from "../../hooks/useForecast";
+import { chunkArray } from "../../utilities/helpers";
+import useGlobalState from "../../hooks/useGlobalState";
 
 ChartJS.register(
   CategoryScale,

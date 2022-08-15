@@ -1,7 +1,7 @@
 import DayRow from "./DayRow";
 import { Accordion, Placeholder } from "react-bootstrap";
-import useGroupedForecast from "../hooks/useGroupedForecast";
-import useGlobalState from "../hooks/useGlobalState";
+import useGroupedForecast from "../../hooks/useGroupedForecast";
+import useGlobalState from "../../hooks/useGlobalState";
 
 const AccordionPlaceholder = () => {
   return (

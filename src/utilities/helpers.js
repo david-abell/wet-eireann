@@ -160,3 +160,38 @@ export function removeEircode(str) {
     .filter((el) => !el.includes("+"))
     .join(" ");
 }
+
+// {
+//   coordinates: {
+//     lat: 51.8985,
+//     long: -8.4756
+//     },
+//   bounds: {
+//     north: 60,
+//     south: 49.1,
+//     west: 20.9,
+//     east: 2.7,
+//     },
+// }
+// API Note
+// latitude and longitude follows the convention of positive values for North and East,
+// negative values for South and West.
+// Over Ireland latitude is always positive, longitude is always negative.
+
+export function isWithinBounds(
+  lat,
+  long,
+  bounds = {
+    north: 60,
+    south: 49.1,
+    west: 20.9,
+    east: 2.7,
+  }
+) {
+  const { north, south, west, east } = bounds;
+  const correctedWest = west * -1;
+  const isBoundedLat = lat <= north && lat >= south;
+  const isBoundedLong = long >= correctedWest && long <= east;
+
+  return isBoundedLat && isBoundedLong;
+}

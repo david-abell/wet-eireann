@@ -1,6 +1,6 @@
 import { Navbar, Nav, Container } from "react-bootstrap";
 import MapSearch from "./MapSearch";
-import "../styles/topNav.css";
+import "./topNav.css";
 function TopNav() {
   return (
     <Navbar expand="md" bg="light" className="mb-4">
