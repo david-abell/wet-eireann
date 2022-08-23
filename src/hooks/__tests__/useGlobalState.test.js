@@ -1,23 +1,35 @@
 import { QueryClientProvider, QueryClient } from "react-query";
-import { renderHook, waitFor, act } from "@testing-library/react";
+import {
+  renderHook,
+  waitFor,
+  render,
+  screen,
+  fireEvent,
+} from "@testing-library/react";
 import useGlobalState from "../useGlobalState";
 
-describe("useGlobalState Hook", () => {
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        retry: false,
-      },
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
     },
-  });
+    persist: true,
+    notifyOnChangeProps: "all",
+  },
+});
 
-  const wrapper = ({ children }) => (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-  );
+const wrapper = ({ children }) => (
+  <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+);
 
-  const initialData = {
-    testKey: "this is some data",
-  };
+const TestComponent = ({ data }) => {
+  return <p data-testid="testNode">{data}</p>;
+};
+
+afterEach(() => queryClient.clear());
+
+describe("useGlobalState Hook", () => {
+  const initialData = "isFirstValue";
 
   it("should set initial data", async () => {
     const { result } = renderHook(
@@ -29,28 +41,58 @@ describe("useGlobalState Hook", () => {
     await waitFor(() => expect(result.current[0]).toBe(initialData));
   });
 
-  it("return initial data", async () => {
+  it("should be undefined when no initial data exists", async () => {
     const { result } = renderHook(() => useGlobalState("testingQuery"), {
       wrapper,
     });
-    await waitFor(() => expect(result.current[0]).toBe(initialData));
+    await waitFor(() => expect(result.current[0]).toBeFalsy());
   });
 
   it("should set new data", async () => {
     const { result } = renderHook(
-      () => useGlobalState("isolatedTestingQuery", "isFirstValue"),
+      () => useGlobalState("isolatedTestingQuery", initialData),
       {
         wrapper,
       }
     );
-    // console.log(result);
-    // await waitFor(() => result.current[2].isSuccess);
-    const [data, setData] = result.current;
+
+    await waitFor(() => expect(result.current[0]).toBe(initialData));
+
     const value = "the data has been changed";
-    act(() => setData(value));
-    console.log(result);
-    // const mockSetData = jest.fn().mockReturnValue(value);
-    // act(() => setData((prev) => ({ ...prev, testKey: value })));
-    // expect(mockSetData).toHaveBeenCalled();
+
+    const { rerender } = render(
+      <QueryClientProvider client={queryClient}>
+        <TestComponent data={result.current[0]} />
+        <button
+          onClick={() =>
+            queryClient.setQueryData("isolatedTestingQuery", value)
+          }
+        >
+          set data
+        </button>
+      </QueryClientProvider>
+    );
+
+    const pElement = screen.getByText(initialData);
+    expect(pElement).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: /set data/i }));
+    await waitFor(() => expect(result.current[0]).toBe(value));
+
+    rerender(
+      <QueryClientProvider client={queryClient}>
+        <TestComponent data={result.current[0]} />
+        <button
+          onClick={() =>
+            queryClient.setQueryData("isolatedTestingQuery", value)
+          }
+        >
+          set data
+        </button>
+      </QueryClientProvider>
+    );
+    expect(pElement).toBeInTheDocument();
+    expect(pElement).toHaveTextContent("the data has been changed");
+    expect(pElement).not.toHaveTextContent(initialData);
   });
 });
