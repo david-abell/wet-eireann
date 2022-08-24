@@ -49,6 +49,7 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.3.0",
     "local-cors-proxy": "^1.1.0",
+    "nock": "^13.2.9",
     "prettier": "^2.6.2"
   }
 }
