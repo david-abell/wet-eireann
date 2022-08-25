@@ -3,13 +3,7 @@
  */
 import nock from "nock";
 import { QueryClientProvider, QueryClient } from "react-query";
-import {
-  renderHook,
-  waitFor,
-  render,
-  screen,
-  fireEvent,
-} from "@testing-library/react";
+import { renderHook, waitFor } from "@testing-library/react";
 import useForecast from "../useForecast";
 
 const queryClient = new QueryClient({
@@ -26,10 +20,6 @@ const wrapper = ({ children }) => (
   <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 );
 
-const TestComponent = ({ data }) => {
-  return <p data-testid="testNode">{data}</p>;
-};
-
 const coordinates = { lat: 50, long: 50 };
 
 const apiProxy = process.env.REACT_APP_CORS_PROXY;
@@ -40,7 +30,7 @@ beforeEach(() => {
 describe("successes", () => {
   afterEach(() => queryClient.clear());
   afterAll(() => nock.restore());
-
+  // eslint-disable-next-line no-unused-vars
   const expectation = nock(apiProxy)
     .persist()
     .intercept(/.*/, "OPTIONS")
@@ -85,6 +75,7 @@ describe("failures", () => {
   afterEach(() => queryClient.clear());
   afterAll(() => nock.restore());
 
+  // eslint-disable-next-line no-unused-vars
   const expectation = nock(apiProxy)
     .persist()
     .intercept(/.*/, "OPTIONS")
