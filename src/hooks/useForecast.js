@@ -25,7 +25,10 @@ function useForecast({ lat, long, options = null }) {
       throw new Error(response.statusText);
     }
     const result = await response.text();
-    const data = parser.parse(result).weatherdata;
+    const data = parser.parse(result)?.weatherdata;
+    if (!data) {
+      throw new Error("Fetching weather data was unsuccessful");
+    }
     const pointData = data.product.time;
     return pointData;
   };
