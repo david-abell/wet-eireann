@@ -184,14 +184,13 @@ export function isWithinBounds(
   bounds = {
     north: 60,
     south: 49.1,
-    west: 20.9,
+    west: -20.9,
     east: 2.7,
   }
 ) {
   const { north, south, west, east } = bounds;
-  const correctedWest = west * -1;
   const isBoundedLat = lat <= north && lat >= south;
-  const isBoundedLong = long >= correctedWest && long <= east;
+  const isBoundedLong = long >= west && long <= east;
 
   return isBoundedLat && isBoundedLong;
 }

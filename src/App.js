@@ -22,7 +22,7 @@ function App() {
     bounds: {
       north: 60,
       south: 49.1,
-      west: 20.9,
+      west: -20.9,
       east: 2.7,
     },
   });
