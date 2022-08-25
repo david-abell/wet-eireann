@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-16"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <atom:link rel="self" type="application/rss+xml" href="https://www.met.ie/warnings" />
+    <title>Met Éireann Warnings</title>
+    <link>https://www.met.ie/warnings</link>
+    <description>Warnings issued by Met Éireann. This RSS feed displays valid warnings for land areas only. Sea area warnings will be added at a later date. Clicking the links, loads the CAP (Common Alerting Protocol) XML file.
+Note: Moderate means ‘Status Yellow’, Severe means ‘Status Orange’ and extreme means ‘Status Red’</description>
+    <copyright>Public Domain</copyright>
+    <language>en</language>
+    <item>
+      <title>Blight Advisory for Ireland</title>
+      <link>https://cap.met.ie//2.49.0.1.372.0.220824073550.N_Norm010_Blight.xml</link>
+      <description>Blight Advisory in operation: Weather conditions conducive to the spread of potato blight will remain in place across many parts of Ireland through to Wednesday (24/08/2022).</description>
+      <author>forecasts@met.ie (Met Éireann)</author>
+      <category>Environmental</category>
+      <guid>https://cap.met.ie//2.49.0.1.372.0.220824073550.N_Norm010_Blight.xml</guid>
+      <pubDate>Mon, 22 Aug 2022 12:10:29 GMT</pubDate>
+    </item>
+    <item>
+      <title>Small Craft warning from Loop Head to Erris Head to Malin Head</title>
+      <link>https://cap.met.ie//2.49.0.1.372.0.220824073550.N_Norm021_SmallCraft.xml</link>
+      <description>Southwesterly winds will reach force 6 at times on Irish coasts from Loop Head to Erris Head to Malin Head.</description>
+      <author>forecasts@met.ie (Met Éireann)</author>
+      <category>Marine</category>
+      <guid>https://cap.met.ie//2.49.0.1.372.0.220824073550.N_Norm021_SmallCraft.xml</guid>
+      <pubDate>Wed, 24 Aug 2022 07:35:50 GMT</pubDate>
+    </item>
+    <atom:link href="https://www.met.ie/warningsxml/rss.xml" rel="self" 
+       type="application/rss+xml" />
+  </channel>
+</rss>
