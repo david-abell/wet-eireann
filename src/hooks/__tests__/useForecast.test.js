@@ -83,7 +83,8 @@ describe("successes", () => {
 describe("failures", () => {
   // eslint-disable-next-line no-unused-vars
   let nockInterceptor;
-  beforeEach(() => {
+
+  test("error should be true with incorrect data", async () => {
     nockInterceptor = nock(apiProxy)
       .intercept(/.*/, "OPTIONS")
       .query(true)
@@ -102,9 +103,31 @@ describe("failures", () => {
           "access-control-allow-origin": "*",
         }
       );
+    const consoleSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    const { result } = renderHook(() => useForecast(coordinates), {
+      wrapper,
+    });
+    await waitFor(() => expect(result.current.isFetching).toBe(true));
+    await waitFor(() => expect(result.current.isFetching).toBe(false));
+    await waitFor(() => expect(result.current.error).toBeTruthy());
+    expect(consoleSpy).toHaveBeenCalled();
   });
 
-  test("error should be true", async () => {
+  test("response with error should set error to error: message", async () => {
+    nockInterceptor = nock(apiProxy)
+      .intercept(/.*/, "OPTIONS")
+      .query(true)
+      .reply(200, undefined, {
+        "Access-Control-Allow-Origin": "*",
+        "access-control-allow-headers":
+          "Content-Type, x-requested-with, text/xml",
+      })
+      .get(/.*/)
+      .query(true)
+      .replyWithError("something awful happened");
+
     const consoleSpy = jest
       .spyOn(console, "error")
       .mockImplementation(() => {});
