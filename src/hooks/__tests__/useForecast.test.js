@@ -1,6 +1,3 @@
-/**
- * @jest-environment-options {"url": "https://met-eireann-cors.herokuapp.com"}
- */
 import nock from "nock";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { renderHook, waitFor } from "@testing-library/react";
