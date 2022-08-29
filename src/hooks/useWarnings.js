@@ -19,7 +19,7 @@ function useWarnings() {
       headers: headers,
       redirect: "error",
     });
-    if (!response.ok) {
+    if (response.status >= 400 && response.status < 600) {
       throw new Error(response.statusText);
     }
     const result = await response.text();
@@ -44,7 +44,7 @@ function useWarnings() {
               headers: headers,
             }
           );
-          if (!linkResponse.ok) {
+          if (response.status >= 400 && response.status < 600) {
             throw new Error(response.statusText);
           }
           const linkResult = await linkResponse.text();
@@ -52,11 +52,10 @@ function useWarnings() {
         })
       );
     }
-
     return warnings;
   };
 
-  const { isLoading, error, data, isFetching } = useQuery(
+  const { isLoading, error, data, isFetching, isSuccess } = useQuery(
     "warnings",
     fetchWarnings,
     { staleTime: 120000 }
@@ -67,6 +66,7 @@ function useWarnings() {
     isLoading,
     error,
     isFetching,
+    isSuccess,
   };
 }
 
