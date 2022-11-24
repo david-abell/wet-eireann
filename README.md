@@ -2,7 +2,7 @@
 
 See it live at [https://wet-eireann.netlify.app/](https://wet-eireann.netlify.app/)
 
-Please be patient with load times. The Heroku free proxy server can take a while to spin up.
+Please be patient with load times. Thefree proxy server can take a while to spin up.
 
 Places lookup is restricted to the region covered by Met Éireann forecast data.
 
@@ -15,7 +15,7 @@ Places lookup is restricted to the region covered by Met Éireann forecast data.
 
 - Met Éireann XML weather API
 - Met Éireann XML warning RSS API
-- cors-anywhere proxy server hosted on heroku as Met Éireann apis do not provide cors headers
+- cors-anywhere proxy server hosted on ~~heroku~~ `render.com` as Met Éireann apis do not provide cors headers
 - hosted on heroku
 - Create React App
 - react-bootstrap
@@ -45,9 +45,18 @@ CLI script:
 npx @svgr/cli --out-dir ./icons2optimized --no-dimensions ./icons2 --svg-props viewBox="0 0 96 96"
 ```
 
-## Installation
+## Installation and Deployment
+
+Two environment variables are required:
+
+- `REACT_APP_CORS_PROXY=http://yourcorsproxy.com/`
+- `REACT_APP_MAPS_API=your google maps api key`
 
 ## Available scripts
+
+to run locally: `npm run start`
+
+to deploy: `npm run build`
 
 ## Credits
 
