@@ -15,9 +15,11 @@ function useMutatePlaceName() {
 
   const getPlaceName = async () => {
     const coordinates = await getGPSCoordinates();
+    console.log(coordinates);
     const { lat, long } = coordinates;
 
-    if ((lat !== 0 && !lat) || (long !== 0 && !long)) {
+    if (lat == null || long == null) {
+      console.log("invalid coordinates");
       throw new Error("Invalid coordinates");
     }
 
