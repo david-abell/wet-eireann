@@ -2,7 +2,7 @@
 
 See it live at [https://wet-eireann.netlify.app/](https://wet-eireann.netlify.app/)
 
-Please be patient with load times. Thefree proxy server can take a while to spin up.
+Please be patient with load times. The free proxy server can take a while to spin up.
 
 Places lookup is restricted to the region covered by Met Éireann forecast data.
 
